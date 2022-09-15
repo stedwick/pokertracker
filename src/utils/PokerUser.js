@@ -1,6 +1,9 @@
 import React from "react";
 import {onAuthStateChanged, signInWithRedirect, signOut} from "firebase/auth";
 import {auth, authGoogle} from "./firebase";
+import Button from "@mui/material/Button";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export class PokerUser extends React.Component {
   constructor(props) {
@@ -32,11 +35,25 @@ export class PokerUser extends React.Component {
   render() {
     if (this.state.myUser) {
       return (
-        <p>Welcome {this.state.myUser.email}!</p>
+        <div>
+          <p>Welcome {this.state.myUser.email}!</p>
+          <p>
+            <Button variant="outlined" color="secondary" endIcon={<LogoutIcon/>} onClick={PokerUser.signOut}>
+              Logout
+            </Button>
+          </p>
+        </div>
       );
     } else {
       return (
-        <p>Anonymous.</p>
+        <div>
+          <p>Anonymous.</p>
+          <p>
+            <Button variant="contained" startIcon={<LoginIcon/>} onClick={PokerUser.signIn}>
+              Login
+            </Button>
+          </p>
+        </div>
       );
     }
   }
