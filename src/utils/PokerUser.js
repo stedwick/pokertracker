@@ -1,7 +1,7 @@
 import React from "react";
 import {onAuthStateChanged, signInWithRedirect, signOut} from "firebase/auth";
 import {auth, authGoogle} from "./firebase";
-import Button from "@mui/material/Button";
+import {Button, IconButton, Avatar, Box} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -17,6 +17,7 @@ export class PokerUser extends React.Component {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.setState({myUser: user});
+        // window.user = user;
       } else {
         // User is signed out
         this.setState({myUser: null});
@@ -36,23 +37,21 @@ export class PokerUser extends React.Component {
     if (this.state.myUser) {
       return (
         <div>
-          <p>Welcome {this.state.myUser.email}!</p>
-          <p>
-            <Button variant="outlined" color="secondary" endIcon={<LogoutIcon/>} onClick={PokerUser.signOut}>
-              Logout
-            </Button>
-          </p>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <Avatar alt={this.state.myUser.email} src={this.state.myUser.photoURL} />
+            &nbsp;
+            <IconButton variant="outlined" color="secondary" onClick={PokerUser.signOut}>
+              <LogoutIcon/>
+            </IconButton>
+          </Box>
         </div>
       );
     } else {
       return (
         <div>
-          <p>Anonymous.</p>
-          <p>
-            <Button variant="contained" startIcon={<LoginIcon/>} onClick={PokerUser.signIn}>
-              Login
-            </Button>
-          </p>
+          <Button variant="contained" startIcon={<LoginIcon/>} onClick={PokerUser.signIn}>
+            Login
+          </Button>
         </div>
       );
     }
