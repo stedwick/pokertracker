@@ -34,25 +34,25 @@ export class PokerUser extends React.Component {
   }
 
   render() {
-    if (this.state.myUser) {
+    const myUser = this.state.myUser
+
+    if (myUser) {
       return (
-        <div>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <Avatar alt={this.state.myUser.email} src={this.state.myUser.photoURL} />
-            &nbsp;
-            <IconButton variant="outlined" color="secondary" onClick={PokerUser.signOut}>
-              <LogoutIcon/>
-            </IconButton>
-          </Box>
-        </div>
+        <Box sx={{ display: { xs: 'flex' } }}>
+          <Avatar alt={myUser.email} src={myUser.photoURL} />
+          &nbsp;
+          <IconButton alt="Logout" variant="outlined" color="secondary" onClick={PokerUser.signOut}>
+            <LogoutIcon/>
+          </IconButton>
+        </Box>
       );
     } else {
       return (
-        <div>
+        <Box sx={{ display: { xs: 'flex' } }}>
           <Button variant="contained" startIcon={<LoginIcon/>} onClick={PokerUser.signIn}>
             Login
           </Button>
-        </div>
+        </Box>
       );
     }
   }

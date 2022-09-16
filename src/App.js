@@ -1,13 +1,11 @@
 import React from "react";
-import {Button, Container} from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AppBar from "./layout/AppBar"
+import {Container} from '@mui/material';
+import PokerAppBar from "./layout/PokerAppBar"
 
 function App() {
   return (
     <div className="App">
-      <AppBar />
+      <PokerAppBar />
       <Container>
         <header className="App-header">
           <p>
