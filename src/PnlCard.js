@@ -42,9 +42,7 @@ const card = (
 export class PnlCard extends React.Component {
   render() {
     return (
-      <Box sx={{ minWidth: 275 }}>
-        <Card variant="outlined">{card}</Card>
-      </Box>
+      <Card variant="outlined">{card}</Card>
     );
   }
 }
