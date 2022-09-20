@@ -4,11 +4,13 @@ import {auth, authGoogle} from "./firebase";
 import {Button, IconButton, Avatar} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PokerMenu from "./PokerMenu";
 
 export class PokerUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {myUser: null};
+    this.state = {myUser: null,
+                  menuIsOpen: false};
   }
 
   componentDidMount() {
@@ -33,14 +35,24 @@ export class PokerUser extends React.Component {
     signOut(auth);
   }
 
+  openMenu = () => {
+    this.setState({menuIsOpen: true});
+  }
+  closeMenu = () => {
+    this.setState({menuIsOpen: false});
+  }
+
   render() {
-    const myUser = this.state.myUser
+    const myUser = this.state.myUser;
+    const menuIsOpen = this.state.menuIsOpen;
 
     if (myUser) {
       return (
         <React.Fragment>
-          <Avatar alt={myUser.email} src={myUser.photoURL} />
-          &nbsp;
+          <Button onClick={this.openMenu}>
+            <Avatar alt={myUser.email} src={myUser.photoURL}/>
+          </Button>
+          <PokerMenu isOpen={menuIsOpen} closeHandler={this.closeMenu}/>
           <IconButton alt="Logout" variant="outlined" color="secondary" onClick={PokerUser.signOut}>
             <LogoutIcon/>
           </IconButton>
