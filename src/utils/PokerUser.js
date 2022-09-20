@@ -10,7 +10,9 @@ export class PokerUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {myUser: null,
-                  menuIsOpen: false};
+                  menuIsOpen: false,
+                  menuAnchor: null
+    };
   }
 
   componentDidMount() {
@@ -35,8 +37,9 @@ export class PokerUser extends React.Component {
     signOut(auth);
   }
 
-  openMenu = () => {
+  openMenu = (event) => {
     this.setState({menuIsOpen: true});
+    this.setState({menuAnchor: event.currentTarget});
   }
   closeMenu = () => {
     this.setState({menuIsOpen: false});
@@ -45,6 +48,7 @@ export class PokerUser extends React.Component {
   render() {
     const myUser = this.state.myUser;
     const menuIsOpen = this.state.menuIsOpen;
+    const menuAnchor = this.state.menuAnchor;
 
     if (myUser) {
       return (
@@ -52,7 +56,7 @@ export class PokerUser extends React.Component {
           <Button onClick={this.openMenu}>
             <Avatar alt={myUser.email} src={myUser.photoURL}/>
           </Button>
-          <PokerMenu isOpen={menuIsOpen} closeHandler={this.closeMenu}/>
+          <PokerMenu isOpen={menuIsOpen} anchorEl={menuAnchor} closeHandler={this.closeMenu}/>
           <IconButton alt="Logout" variant="outlined" color="secondary" onClick={PokerUser.signOut}>
             <LogoutIcon/>
           </IconButton>
