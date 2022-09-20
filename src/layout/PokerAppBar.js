@@ -7,7 +7,9 @@ export default function PokerAppBar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <StyleIcon/>
+        <Typography variant="h6">
+          <StyleIcon sx={{ verticalAlign: 'sub'}}/>
+        </Typography>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           &nbsp; Poker Tracker
         </Typography>

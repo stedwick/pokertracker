@@ -11,7 +11,9 @@ function PokerSession() {
   return (
     <Card variant="outlined">
       <CardContent sx={{position: 'relative'}}>
-        <TableBarIcon sx={{ color: 'text.disabled', position: 'absolute'}}/>
+        <Typography variant="h6" sx={{ color: 'text.disabled', position: 'absolute'}}>
+          <TableBarIcon sx={{ verticalAlign: 'sub'}}/>
+        </Typography>
         <Box sx={{position: "absolute", right: '0', marginRight: 2}}>
           <Button variant="contained" size="small" startIcon={<AddIcon />}>
             New

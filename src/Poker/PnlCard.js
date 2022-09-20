@@ -7,7 +7,9 @@ export class PnlCard extends React.Component {
     return (
       <Card>
         <CardContent>
-          <AccountBalanceIcon sx={{ color: 'text.disabled', position: 'absolute'}}/>
+          <Typography variant="h6" sx={{ color: 'text.disabled', position: 'absolute'}}>
+            <AccountBalanceIcon sx={{ verticalAlign: 'sub'}}/>
+          </Typography>
           <Typography variant="h6" align="center">Bankroll</Typography>
           <Typography variant="h4" align="center" sx={{ color: 'success.main' }}>+$1,000,000</Typography>
         </CardContent>
