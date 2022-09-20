@@ -1,9 +1,8 @@
 import React from "react";
 import {onAuthStateChanged, signInWithRedirect, signOut} from "firebase/auth";
 import {auth, authGoogle} from "./firebase";
-import {Button, IconButton, Avatar} from "@mui/material";
+import {Button, Avatar} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
 import PokerMenu from "./PokerMenu";
 
 export class PokerUser extends React.Component {
@@ -57,9 +56,6 @@ export class PokerUser extends React.Component {
             <Avatar alt={myUser.email} src={myUser.photoURL}/>
           </Button>
           <PokerMenu isOpen={menuIsOpen} anchorEl={menuAnchor} closeHandler={this.closeMenu}/>
-          <IconButton alt="Logout" variant="outlined" color="secondary" onClick={PokerUser.signOut}>
-            <LogoutIcon/>
-          </IconButton>
         </React.Fragment>
       );
     } else {

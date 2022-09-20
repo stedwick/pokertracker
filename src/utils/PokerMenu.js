@@ -1,5 +1,7 @@
 import * as React from 'react';
-import {Menu, MenuItem} from '@mui/material';
+import {Divider, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from '@mui/material';
+import {Logout} from "@mui/icons-material";
+import {PokerUser} from "./PokerUser";
 
 export default function PokerMenu(props) {
   const isOpen = props.isOpen;
@@ -13,9 +15,17 @@ export default function PokerMenu(props) {
         open={isOpen}
         onClose={closeHandler}
       >
-        <MenuItem onClick={closeHandler}>Profile</MenuItem>
-        <MenuItem onClick={closeHandler}>My account</MenuItem>
-        <MenuItem onClick={closeHandler}>Logout</MenuItem>
+        {/*<MenuItem onClick={closeHandler}>My account</MenuItem>*/}
+        {/*<MenuItem onClick={closeHandler}>Logout</MenuItem>*/}
+        {/*<Divider/>*/}
+        <MenuItem onClick={PokerUser.signOut}>
+          <ListItemIcon><Logout color="secondary"/></ListItemIcon>
+          <ListItemText>
+            <Typography color="secondary">
+              Logout
+            </Typography>
+          </ListItemText>
+        </MenuItem>
       </Menu>
     );
   } else {
