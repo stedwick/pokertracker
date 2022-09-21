@@ -22,6 +22,7 @@ export class PokerSessions extends React.Component {
 
   render() {
     const pokerSessions = this.state.pokerSessions;
+    const pokerSessionsLength = pokerSessions.length
 
     return (
       <Card variant="outlined">
@@ -37,7 +38,7 @@ export class PokerSessions extends React.Component {
           <Typography variant="h6" align="center">Sessions</Typography>
           <br/>
           {pokerSessions.map((pokerSession, index)=>{
-            return <PokerSession key={index} details={pokerSession}/>
+            return <PokerSession key={pokerSessionsLength - index} details={pokerSession}/>
           })}
         </CardContent>
       </Card>

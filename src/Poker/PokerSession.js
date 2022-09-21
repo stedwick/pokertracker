@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+import PokerSessionForm from "./PokerSessionForm";
 
 export class PokerSession extends React.Component {
   constructor(props) {
@@ -20,10 +21,7 @@ export class PokerSession extends React.Component {
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <PokerSessionForm/>
         </AccordionDetails>
       </Accordion>
     );
