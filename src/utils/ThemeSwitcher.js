@@ -3,12 +3,29 @@ import {CssBaseline} from "@mui/material";
 import App from "../App";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 
+// https://bareynol.github.io/mui-theme-creator/
+export const themeOptions = {
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#3f51b5',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+    background: {
+      default: '#dfedf9',
+      paper: '#ffffff',
+    },
+  },
+};
+const lightThemeOptions = themeOptions;
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   }
 });
-const lightTheme = createTheme({});
+const lightTheme = createTheme(lightThemeOptions);
 const themes = {
   "light": lightTheme,
   "dark": darkTheme
