@@ -1,26 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import {CssBaseline} from '@mui/material';
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+import {ThemeSwitcher} from "./utils/ThemeSwitcher";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <React.Fragment>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline enableColorScheme />
-
-        <App/>
-
-      </ThemeProvider>
+      <ThemeSwitcher/>
     </React.Fragment>
   </React.StrictMode>
 );
