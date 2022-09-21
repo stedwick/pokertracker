@@ -1,9 +1,11 @@
 import React from "react";
 import {onAuthStateChanged, signInWithRedirect, signOut} from "firebase/auth";
-import {auth, authGoogle} from "./firebase";
+import {auth, authGoogle, db} from "./firebase";
 import {Button, Avatar} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PokerMenu from "./PokerMenu";
+import { collection, addDoc, doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+
 
 export class PokerUser extends React.Component {
   constructor(props) {
@@ -21,6 +23,7 @@ export class PokerUser extends React.Component {
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.setState({myUser: user});
         // window.user = user;
+        this.setFirestoreUser(user);
       } else {
         // User is signed out
         this.setState({myUser: null});
@@ -31,9 +34,20 @@ export class PokerUser extends React.Component {
   static signIn() {
     signInWithRedirect(auth, authGoogle);
   }
-
   static signOut() {
     signOut(auth);
+  }
+  setFirestoreUser = async (user) => {
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        createdAt: Timestamp.now()
+      }, {merge: true});
+      const docRef = await getDoc(doc(db, "users", user.uid));
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
 
   openMenu = (event) => {
