@@ -13,6 +13,7 @@ function App() {
         <PnlCard />
         <br/>
         <PokerSessions/>
+        <br/>
       </Container>
     </div>
   );
