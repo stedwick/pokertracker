@@ -43,14 +43,15 @@ class PokerSessionForm extends React.Component {
             value="1/2"
             options={['1/2', '1/3', '2/5'].sort()}
             renderInput={(params) =>
-              <TextField {...params} label="Stakes" name='stakes' />}
+              <TextField {...params} label="Stakes" name='stakes' type='text' inputMode='decimal' />}
           />
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Buy-in' name='buyIn' value={12323} />
+                         label='Buy-in' name='buyIn' value={12323} autoComplete='off' type='text' inputMode='decimal' />
+                      {/*type='number' inputMode='decimal' pattern='[0-9.,$€£]*' />*/}
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Cash-out' name='cashOut' />
+                         label='Cash-out' name='cashOut' autoComplete='off' type='text' inputMode='decimal' />
         </Box>
         <br/>
 
