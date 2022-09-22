@@ -6,7 +6,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
 
 
 class PokerSessionForm extends React.Component {
@@ -21,7 +21,8 @@ class PokerSessionForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    alert('A form was submitted: ' + JSON.stringify(Object.fromEntries(formData)));
+    const formDataObj = Object.fromEntries(formData);
+    alert('A form was submitted: ' + JSON.stringify(formDataObj, null, 2));
     this.props.closeHandler();
   }
 
