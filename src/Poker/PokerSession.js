@@ -8,20 +8,27 @@ import PokerSessionForm from "./PokerSessionForm";
 export class PokerSession extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      expanded: false
+    };
+  }
+
+  toggleExpanded = () => {
+    this.setState((prevState) => ({expanded: !Boolean(prevState.expanded)}));
   }
 
   render() {
     const location = this.props.details.location;
 
     return (
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion expanded={this.state.expanded}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
           <EmojiEventsOutlinedIcon />
           <Typography color="error" sx={{fontWeight: 'bold'}}>&nbsp;•&nbsp;</Typography>
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <PokerSessionForm/>
+          <PokerSessionForm closeHandler={this.toggleExpanded} />
         </AccordionDetails>
       </Accordion>
     );
