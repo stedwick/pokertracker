@@ -6,15 +6,14 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-const dayjs = require('dayjs');
 
 
 class PokerSessionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: dayjs(),
-      endTime: null
+      startTime: props.valuesObj.startDateTime,
+      endTime: props.valuesObj.endDateTime
     }
   }
 
@@ -34,25 +33,26 @@ class PokerSessionForm extends React.Component {
   }
 
   render() {
+    const valuesObj = this.props.valuesObj;
     return (
       <form onSubmit={this.handleSubmit}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
-            value="1/2"
+            value={valuesObj.stakes}
             options={['1/2', '1/3', '2/5'].sort()}
             renderInput={(params) =>
               <TextField {...params} label="Stakes" name='stakes' />}
           />
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Buy-in' name='buyIn' value={12323} autoComplete='off'
+                         label='Buy-in' name='buyIn' value={valuesObj.buyIn} autoComplete='off'
                          type='tel' // sigh
                          inputMode='decimal' pattern='[0-9.,$€£]*' />
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Cash-out' name='cashOut' autoComplete='off'
+                         label='Cash-out' name='cashOut' value={valuesObj.cashOut} autoComplete='off'
                          type='tel' // sigh
                          inputMode='decimal' pattern='[0-9.,$€£]*' />
         </Box>
@@ -61,7 +61,7 @@ class PokerSessionForm extends React.Component {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
-              value={this.state.startTime}
+              value={Boolean(this.state.startTime) ? this.state.startTime : null}
               renderInput={(props) =>
                 <TextField name='startDateTime'
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props} />}
@@ -69,7 +69,7 @@ class PokerSessionForm extends React.Component {
               onChange={this.onStartTimeChange}
             />
             <DateTimePicker
-              value={this.state.endTime}
+              value={Boolean(this.state.endTime) ? this.state.endTime : null}
               renderInput={(props) =>
                 <TextField name='endDateTime'
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props} />}
@@ -84,15 +84,15 @@ class PokerSessionForm extends React.Component {
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
-            value="Mirage"
+            value={valuesObj.location}
             options={['Mirage', 'Wynn', 'Aria'].sort()}
             renderInput={(params) =>
               <TextField {...params} label="Location" name='location' />}
           />
-          <TextField sx={{flex: 1}} label='Notes' name='notes' />
+          <TextField sx={{flex: 1}} label='Notes' name='notes' value={valuesObj.notes} />
         </Box>
 
-        <RadioGroup defaultValue="cashGame" name="cashOrTourney"
+        <RadioGroup defaultValue={valuesObj.cashOrTourney} name="cashOrTourney"
                     sx={{ flexDirection: 'row', marginTop: 1, marginBottom: 1}}>
           <FormControlLabel value="cashGame" control={<Radio />} label="Cash game" />
           <FormControlLabel value="tournament" control={<Radio />} label="Tournament" />
