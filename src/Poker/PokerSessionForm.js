@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {Autocomplete, Button, TextField, Box, Tooltip,
-  FormControlLabel, RadioGroup, Radio} from "@mui/material";
+  FormControlLabel, RadioGroup, Radio, InputAdornment, IconButton} from "@mui/material";
 import { NumericFormat } from 'react-number-format';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import ClearIcon from '@mui/icons-material/Clear';
 
 
 class PokerSessionForm extends React.Component {
@@ -30,6 +31,14 @@ class PokerSessionForm extends React.Component {
   }
   onEndTimeChange = (time) => {
     this.setState({endTime: time});
+  }
+  clearStartTime = (event) => {
+    event.stopPropagation();
+    this.setState({startTime: null});
+  }
+  clearEndTime = (event) => {
+    event.stopPropagation();
+    this.setState({endTime: null});
   }
 
   render() {
@@ -64,7 +73,19 @@ class PokerSessionForm extends React.Component {
               value={Boolean(this.state.startTime) ? this.state.startTime : null}
               renderInput={(props) =>
                 <TextField name='startDateTime'
-                           sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props} />}
+                           sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
+                           InputProps={{endAdornment:
+                               <InputAdornment position="end">
+                                 <IconButton
+                                   onClick={this.clearStartTime}
+                                   edge="end">
+                                   <ClearIcon />
+                                 </IconButton>
+                               </InputAdornment>
+                           }}
+                />
+
+              }
               label="Start time"
               onChange={this.onStartTimeChange}
             />
@@ -72,7 +93,17 @@ class PokerSessionForm extends React.Component {
               value={Boolean(this.state.endTime) ? this.state.endTime : null}
               renderInput={(props) =>
                 <TextField name='endDateTime'
-                           sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props} />}
+                           sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
+                           InputProps={{endAdornment:
+                               <InputAdornment position="end">
+                                 <IconButton
+                                   onClick={this.clearEndTime}
+                                   edge="end">
+                                   <ClearIcon />
+                                 </IconButton>
+                               </InputAdornment>
+                           }}
+                />}
               label="End time"
               onChange={this.onEndTimeChange}
             />

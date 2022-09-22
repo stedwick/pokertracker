@@ -19,12 +19,16 @@ export class PokerSession extends React.Component {
 
   render() {
     const location = this.props.details.location;
+    const details = this.props.details;
 
     return (
       <Accordion expanded={this.state.expanded}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
           <EmojiEventsOutlinedIcon />
-          <Typography color="error" sx={{fontWeight: 'bold'}}>&nbsp;•&nbsp;</Typography>
+          <Typography color="error" sx={{fontWeight: 'bold'}}
+                      visibility={Boolean(details.endDateTime) ? 'hidden' : 'visible'}>
+            &nbsp;•&nbsp;
+          </Typography>
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>
