@@ -65,18 +65,33 @@ export class PokerSessions extends React.Component {
 
   addPokerSession = () => {
     const nowDateTime = dayjs();
-    const newSession = {
-      "id": this.state.idGen.next().value,
-      "createdAt": nowDateTime,
-      "sortDateTime": nowDateTime,
-      "stakes": "1/2",
-      "buyIn": 150,
-      "cashOut": "",
-      "startDateTime": nowDateTime,
-      "endDateTime": "",
-      "location": "My Local Poker Room",
-      "notes": "",
-      "cashOrTourney": "cashGame"
+    let newSession;
+    if (this.state.pokerSessions.length > 0) {
+      const clonedSession = {...this.state.pokerSessions[0]};
+      const blankSession = {
+        "id": this.state.idGen.next().value,
+        "createdAt": nowDateTime,
+        "sortDateTime": nowDateTime,
+        "cashOut": "",
+        "startDateTime": nowDateTime,
+        "endDateTime": "",
+        "notes": ""
+      };
+      newSession = {...clonedSession, ...blankSession};
+    } else {
+      newSession = {
+        "id": this.state.idGen.next().value,
+        "createdAt": nowDateTime,
+        "sortDateTime": nowDateTime,
+        "stakes": "1/2",
+        "buyIn": 400,
+        "cashOut": "",
+        "startDateTime": nowDateTime,
+        "endDateTime": "",
+        "location": "My Local Poker Room",
+        "notes": "♠ Let's run good!",
+        "cashOrTourney": "cashGame"
+      };
     }
     this.setState(prevState => (
       {pokerSessions: [newSession, ...prevState.pokerSessions]})
