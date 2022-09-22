@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import PokerSessionForm from "./PokerSessionForm";
 
 export class PokerSession extends React.Component {
@@ -20,11 +21,18 @@ export class PokerSession extends React.Component {
   render() {
     const location = this.props.details.location;
     const details = this.props.details;
+    let sessionIcon;
+    if (details.cashOrTourney === "cashGame") {
+      sessionIcon = <LocalAtmOutlinedIcon />
+      // sessionIcon = <PaidOutlinedIcon />
+    } else {
+      sessionIcon = <EmojiEventsOutlinedIcon />
+    }
 
     return (
       <Accordion expanded={this.state.expanded}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
-          <EmojiEventsOutlinedIcon />
+          {sessionIcon}
           <Typography color="error" sx={{fontWeight: 'bold'}}
                       visibility={Boolean(details.endDateTime) ? 'hidden' : 'visible'}>
             &nbsp;•&nbsp;

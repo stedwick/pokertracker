@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import ClearIcon from '@mui/icons-material/Clear';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import dayjs from "dayjs";
 
 
 class PokerSessionForm extends React.Component {
@@ -40,9 +42,44 @@ class PokerSessionForm extends React.Component {
     event.stopPropagation();
     this.setState({endTime: null});
   }
+  setStartNow = (event) => {
+    event.stopPropagation();
+    this.setState({startTime: dayjs()});
+  }
+  setEndNow = (event) => {
+    event.stopPropagation();
+    this.setState({endTime: dayjs()});
+  }
 
   render() {
     const valuesObj = this.props.valuesObj;
+    let startAdornment;
+    if (Boolean(this.state.startTime)) {
+      startAdornment =
+        <IconButton onClick={this.clearStartTime} edge="end">
+          <ClearIcon />
+        </IconButton>
+    } else {
+      startAdornment =
+        <Button variant='outlined' size='small' onClick={this.setStartNow}
+                startIcon={<AccessTimeIcon edge="end"/>}>
+          Now
+        </Button>
+    }
+    let endAdornment;
+    if (Boolean(this.state.endTime)) {
+      endAdornment =
+        <IconButton onClick={this.clearEndTime} edge="end">
+          <ClearIcon />
+        </IconButton>
+    } else {
+      endAdornment =
+        <Button variant='outlined' size='small' onClick={this.setEndNow}
+                startIcon={<AccessTimeIcon/>}>
+          Now
+        </Button>
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
@@ -76,11 +113,7 @@ class PokerSessionForm extends React.Component {
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
                            InputProps={{endAdornment:
                                <InputAdornment position="end">
-                                 <IconButton
-                                   onClick={this.clearStartTime}
-                                   edge="end">
-                                   <ClearIcon />
-                                 </IconButton>
+                                 {startAdornment}
                                </InputAdornment>
                            }}
                 />
@@ -96,11 +129,7 @@ class PokerSessionForm extends React.Component {
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
                            InputProps={{endAdornment:
                                <InputAdornment position="end">
-                                 <IconButton
-                                   onClick={this.clearEndTime}
-                                   edge="end">
-                                   <ClearIcon />
-                                 </IconButton>
+                                 {endAdornment}
                                </InputAdornment>
                            }}
                 />}
