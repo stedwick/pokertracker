@@ -9,6 +9,7 @@ import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import dayjs from "dayjs";
+import ConfirmDeleteSessionDialog from "../utils/ConfirmDeleteSessionDialog";
 
 
 class PokerSessionForm extends React.Component {
@@ -16,7 +17,8 @@ class PokerSessionForm extends React.Component {
     super(props);
     this.state = {
       startTime: props.valuesObj.startDateTime,
-      endTime: props.valuesObj.endDateTime
+      endTime: props.valuesObj.endDateTime,
+      deleteDialogIsOpen: false
     }
   }
 
@@ -27,7 +29,7 @@ class PokerSessionForm extends React.Component {
     alert('A form was submitted: ' + JSON.stringify(formDataObj, null, 2));
     this.props.closeHandler();
   }
-  deleteHandler = (event) => {
+  deleteHandler = () => {
     // this.props.closeHandler();
     // setTimeout(()=>(this.props.crud.delete(this.props.valuesObj)), 1000);
     this.props.crud.delete(this.props.valuesObj);
@@ -170,9 +172,12 @@ class PokerSessionForm extends React.Component {
             <Button type="submit" startIcon={<SaveIcon/>} variant="contained" color='success'>Update</Button>
           </Box>
           <Tooltip title="Delete">
-            <Button variant="outlined" color='error' onClick={this.deleteHandler}><DeleteIcon/></Button>
+            <Button variant="outlined" color='error' onClick={()=>{this.setState({deleteDialogIsOpen:true})}}><DeleteIcon/></Button>
           </Tooltip>
         </Box>
+        <ConfirmDeleteSessionDialog open={this.state.deleteDialogIsOpen} pokerSession={valuesObj}
+                                    handleClose={()=>{this.setState({deleteDialogIsOpen:false})}}
+                                    handleDelete={this.deleteHandler}/>
       </form>
     );
   }
