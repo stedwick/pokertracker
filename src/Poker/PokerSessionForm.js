@@ -30,8 +30,6 @@ class PokerSessionForm extends React.Component {
     this.props.closeHandler();
   }
   deleteHandler = () => {
-    // this.props.closeHandler();
-    // setTimeout(()=>(this.props.crud.delete(this.props.valuesObj)), 1000);
     this.props.crud.delete(this.props.valuesObj);
   }
 

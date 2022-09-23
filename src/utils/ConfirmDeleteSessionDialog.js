@@ -31,7 +31,7 @@ export default function ConfirmDeleteSessionDialog(props) {
         <DialogContentText>
           Really delete poker session?
           <br/>
-          ⇨ {[props.pokerSession.stakes, [props.pokerSession.location,
+          -&gt; {[props.pokerSession.stakes, [props.pokerSession.location,
               dayjs(props.pokerSession.startDateTime).format('MMM D')].filter(Boolean).join(', ')].filter(Boolean).join(' ')}
         </DialogContentText>
       </DialogContent>

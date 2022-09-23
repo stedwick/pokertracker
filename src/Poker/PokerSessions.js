@@ -89,7 +89,7 @@ export class PokerSessions extends React.Component {
         "startDateTime": nowDateTime,
         "endDateTime": "",
         "location": "My Local Poker Room",
-        "notes": "♠ Let's run good!",
+        "notes": "🃏 Let's run good!",
         "cashOrTourney": "cashGame"
       };
     }
@@ -130,6 +130,17 @@ export class PokerSessions extends React.Component {
             return <PokerSession key={pokerSession.id} details={pokerSession}
                                  crud={{delete: this.deletePokerSession}}/>
           })}
+          {pokerSessions.length === 0 &&
+            <box>
+              <em>
+                <Typography align='center' sx={{color: 'text.secondary'}}>
+                  ♣♥♠♦<br/>
+                  No sessions.<br/>
+                  Shouldn't you be out playing poker?
+                </Typography>
+              </em>
+            </box>
+          }
         </CardContent>
       </Card>
     );
