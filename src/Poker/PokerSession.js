@@ -40,7 +40,8 @@ export class PokerSession extends React.Component {
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <PokerSessionForm valuesObj={this.props.details} closeHandler={this.toggleExpanded} />
+          <PokerSessionForm valuesObj={this.props.details} closeHandler={this.toggleExpanded}
+                            crud={this.props.crud}/>
         </AccordionDetails>
       </Accordion>
     );

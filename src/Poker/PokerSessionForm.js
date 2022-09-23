@@ -27,6 +27,11 @@ class PokerSessionForm extends React.Component {
     alert('A form was submitted: ' + JSON.stringify(formDataObj, null, 2));
     this.props.closeHandler();
   }
+  deleteHandler = (event) => {
+    // this.props.closeHandler();
+    // setTimeout(()=>(this.props.crud.delete(this.props.valuesObj)), 1000);
+    this.props.crud.delete(this.props.valuesObj);
+  }
 
   onStartTimeChange = (time) => {
     this.setState({startTime: time});
@@ -82,6 +87,8 @@ class PokerSessionForm extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
+        <input type="hidden" name='id' value={valuesObj.id}/>
+
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
@@ -163,7 +170,7 @@ class PokerSessionForm extends React.Component {
             <Button type="submit" startIcon={<SaveIcon/>} variant="contained" color='success'>Update</Button>
           </Box>
           <Tooltip title="Delete">
-            <Button variant="outlined" color='error' onClick={this.props.closeHandler}><DeleteIcon/></Button>
+            <Button variant="outlined" color='error' onClick={this.deleteHandler}><DeleteIcon/></Button>
           </Tooltip>
         </Box>
       </form>

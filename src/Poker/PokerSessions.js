@@ -98,6 +98,18 @@ export class PokerSessions extends React.Component {
     );
   }
 
+  deletePokerSession = (pokerSession) => {
+    // alert("deleting");
+    const pSessIndex = this.state.pokerSessions.findIndex(pSess=>pSess.id===pokerSession.id);
+    if (pSessIndex > -1) {
+      this.setState((prevState) => {
+        let splicedPokerSessions = [...prevState.pokerSessions];
+        splicedPokerSessions.splice(pSessIndex, 1);
+        return {pokerSessions: splicedPokerSessions};
+      });
+    }
+  }
+
   render() {
     const pokerSessions = this.state.pokerSessions;
 
@@ -115,7 +127,8 @@ export class PokerSessions extends React.Component {
           <Typography variant="h6" align="center">Sessions</Typography>
           <br/>
           {pokerSessions.map((pokerSession)=>{
-            return <PokerSession key={pokerSession.id} details={pokerSession}/>
+            return <PokerSession key={pokerSession.id} details={pokerSession}
+                                 crud={{delete: this.deletePokerSession}}/>
           })}
         </CardContent>
       </Card>
