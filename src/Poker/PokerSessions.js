@@ -131,12 +131,12 @@ export class PokerSessions extends React.Component {
                                  crud={{delete: this.deletePokerSession}}/>
           })}
           {pokerSessions.length === 0 &&
-            <Typography align='center' sx={{color: 'text.secondary'}}>
+            <Typography align='center'>
               ♣♥♠♦<br/>
-              <em>
+              <Typography sx={{color: 'text.secondary', fontStyle: 'italic'}}>
                 No sessions.<br/>
                 Shouldn't you be out playing poker?
-              </em>
+              </Typography>
             </Typography>
           }
         </CardContent>
