@@ -30,6 +30,7 @@ export class PokerSessions extends React.Component {
           "startDateTime": nowDateTime.subtract(80, 'hour'),
           "endDateTime": nowDateTime.subtract(78, 'hour'),
           "location": "Wynn",
+          "game": "No-Limit Hold'em",
           "notes": "🍹 Tasty watermelon juice",
           "cashOrTourney": "cashGame"
         },
@@ -43,6 +44,7 @@ export class PokerSessions extends React.Component {
           "startDateTime": nowDateTime.subtract(56, 'hour'),
           "endDateTime": nowDateTime.subtract(52, 'hour'),
           "location": "Aria",
+          "game": "Pot-Limit Omaha",
           "notes": "Visited PokerGo studio",
           "cashOrTourney": "tournament"
         },
@@ -56,6 +58,7 @@ export class PokerSessions extends React.Component {
           "startDateTime": nowDateTime.subtract(32, 'hour'),
           "endDateTime": nowDateTime.subtract(25, 'hour'),
           "location": "Ballys",
+          "game": "No-Limit Hold'em",
           "notes": `WSOP ${nowDateTime.format('YYYY').toString()} let's gooo`,
           "cashOrTourney": "cashGame"
         }
@@ -89,6 +92,7 @@ export class PokerSessions extends React.Component {
         "startDateTime": nowDateTime,
         "endDateTime": "",
         "location": "My Local Poker Room",
+        "game": "No-Limit Hold'em",
         "notes": "🃏 Let's run good!",
         "cashOrTourney": "cashGame"
       };
@@ -127,9 +131,10 @@ export class PokerSessions extends React.Component {
           <Typography variant="h6" align="center">Sessions</Typography>
           <br/>
           {pokerSessions.map((pokerSession)=>{
-            return <PokerSession key={pokerSession.id} details={pokerSession}
+            return <PokerSession key={pokerSession.id} pokerSession={pokerSession}
                                  crud={{delete: this.deletePokerSession}}/>
           })}
+
           {pokerSessions.length === 0 &&
             <React.Fragment>
               <Typography align='center'>

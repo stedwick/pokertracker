@@ -16,8 +16,8 @@ class PokerSessionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: props.valuesObj.startDateTime,
-      endTime: props.valuesObj.endDateTime,
+      startTime: props.pokerSession.startDateTime,
+      endTime: props.pokerSession.endDateTime,
       deleteDialogIsOpen: false
     }
   }
@@ -30,7 +30,7 @@ class PokerSessionForm extends React.Component {
     this.props.closeHandler();
   }
   deleteHandler = () => {
-    this.props.crud.delete(this.props.valuesObj);
+    this.props.crud.delete(this.props.pokerSession);
   }
 
   onStartTimeChange = (time) => {
@@ -57,7 +57,7 @@ class PokerSessionForm extends React.Component {
   }
 
   render() {
-    const valuesObj = this.props.valuesObj;
+    const pokerSession = this.props.pokerSession;
     let startAdornment;
     if (Boolean(this.state.startTime)) {
       startAdornment =
@@ -87,25 +87,25 @@ class PokerSessionForm extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type="hidden" name='id' value={valuesObj.id}/>
+        <input type="hidden" name='id' value={pokerSession.id}/>
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
-            value={valuesObj.stakes}
+            value={pokerSession.stakes}
             options={['1/2', '1/3', '2/5'].sort()}
             renderInput={(params) =>
               <TextField {...params} label="Stakes" name='stakes' />}
           />
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Buy-in' name='buyIn' value={valuesObj.buyIn} autoComplete='off'
+                         label='Buy-in' name='buyIn' value={pokerSession.buyIn} autoComplete='off'
                          type='tel' // sigh
                          inputMode='decimal' pattern='[0-9.,$€£]*' />
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
-                         label='Cash-out' name='cashOut' value={valuesObj.cashOut} autoComplete='off'
+                         label='Cash-out' name='cashOut' value={pokerSession.cashOut} autoComplete='off'
                          type='tel' // sigh
                          inputMode='decimal' pattern='[0-9.,$€£]*' />
         </Box>
@@ -151,15 +151,23 @@ class PokerSessionForm extends React.Component {
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
-            value={valuesObj.location}
+            value={pokerSession.location}
             options={['Mirage', 'Wynn', 'Aria'].sort()}
             renderInput={(params) =>
               <TextField {...params} label="Location" name='location' />}
           />
-          <TextField sx={{flex: 1}} label='Notes' name='notes' value={valuesObj.notes} />
+          <Autocomplete
+            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
+            freeSolo
+            value={pokerSession.game}
+            options={['NLH', 'PLO'].sort()}
+            renderInput={(params) =>
+              <TextField {...params} label="Game" name='game' />}
+          />
+          <TextField sx={{flex: 1}} label='Notes' name='notes' value={pokerSession.notes} />
         </Box>
 
-        <RadioGroup defaultValue={valuesObj.cashOrTourney} name="cashOrTourney"
+        <RadioGroup defaultValue={pokerSession.cashOrTourney} name="cashOrTourney"
                     sx={{ flexDirection: 'row', marginTop: 1, marginBottom: 1}}>
           <FormControlLabel value="cashGame" control={<Radio />} label="Cash game" />
           <FormControlLabel value="tournament" control={<Radio />} label="Tournament" />
@@ -173,7 +181,7 @@ class PokerSessionForm extends React.Component {
             <Button variant="outlined" color='error' onClick={()=>{this.setState({deleteDialogIsOpen:true})}}><DeleteIcon/></Button>
           </Tooltip>
         </Box>
-        <ConfirmDeleteSessionDialog open={this.state.deleteDialogIsOpen} pokerSession={valuesObj}
+        <ConfirmDeleteSessionDialog open={this.state.deleteDialogIsOpen} pokerSession={pokerSession}
                                     handleClose={()=>{this.setState({deleteDialogIsOpen:false})}}
                                     handleDelete={this.deleteHandler}/>
       </form>

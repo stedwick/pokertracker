@@ -4,7 +4,7 @@ import {auth, authGoogle, db} from "./firebase";
 import {Button, Avatar} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PokerMenu from "./PokerMenu";
-import { collection, addDoc, doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 
 
 export class PokerUser extends React.Component {
