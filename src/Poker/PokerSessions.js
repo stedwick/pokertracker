@@ -62,7 +62,7 @@ export class PokerSessions extends React.Component {
           "notes": `WSOP ${nowDateTime.format('YYYY').toString()} let's gooo`,
           "cashOrTourney": "cashGame"
         }
-      ].sort(pSess=>pSess.sortDateTime).reverse()
+      ]
     };
   }
 
@@ -136,6 +136,10 @@ export class PokerSessions extends React.Component {
 
   render() {
     const pokerSessions = this.state.pokerSessions;
+    pokerSessions.sort( (a, b) => {
+        return dayjs(b.startDateTime || b.createdAt) - dayjs(a.startDateTime || a.createdAt)
+      }
+    );
 
     const autofill = {};
     autofill.location = [...new Set(pokerSessions.map(pSess=>pSess.location))]
