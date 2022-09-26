@@ -52,7 +52,10 @@ export class PokerSession extends React.Component {
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <PokerSessionForm pokerSession={this.props.pokerSession} closeHandler={this.toggleExpanded} crud={this.props.crud}/>
+          <PokerSessionForm pokerSession={this.props.pokerSession}
+            closeHandler={this.toggleExpanded} crud={this.props.crud}
+            autofill={this.props.autofill} 
+          />
         </AccordionDetails>
       </Accordion>
     );

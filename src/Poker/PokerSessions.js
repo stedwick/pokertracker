@@ -136,6 +136,13 @@ export class PokerSessions extends React.Component {
 
   render() {
     const pokerSessions = this.state.pokerSessions;
+    window.pokerSessions = pokerSessions;
+
+    const autofill = {};
+    autofill.stakes = [...new Set(pokerSessions.map((pSess)=>pSess.stakes))]
+      .sort( (a,b) => Number(a.split('/').at(-1)) - Number(b.split('/').at(-1)) );
+    autofill.location = [...new Set(pokerSessions.map((pSess)=>pSess.location).sort())];
+    autofill.game = [...new Set(pokerSessions.map((pSess)=>pSess.game).sort())];
 
     return (
       <Card variant="outlined">
@@ -152,6 +159,7 @@ export class PokerSessions extends React.Component {
           <br/>
           {pokerSessions.map((pokerSession)=>{
             return <PokerSession key={pokerSession.id} pokerSession={pokerSession}
+                                 autofill={autofill}
                                  crud={{update: this.updatePokerSession,
                                         delete: this.deletePokerSession}}/>
           })}

@@ -90,6 +90,8 @@ class PokerSessionForm extends React.Component {
         </Button>
     }
 
+    const autofill = this.props.autofill
+
     return (
       <form onSubmit={this.handleSubmit}>
         <input type="hidden" name='id' value={pokerSession.id}/>
@@ -99,7 +101,7 @@ class PokerSessionForm extends React.Component {
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
             value={pokerSession.stakes}
-            options={['1/2', '1/3', '2/5'].sort()}
+            options={autofill.stakes}
             renderInput={(params) =>
               <TextField {...params} label="Stakes" name='stakes' />}
           />
@@ -157,7 +159,7 @@ class PokerSessionForm extends React.Component {
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
             value={pokerSession.location}
-            options={['Mirage', 'Wynn', 'Aria'].sort()}
+            options={autofill.location}
             renderInput={(params) =>
               <TextField {...params} label="Location" name='location' />}
           />
@@ -165,12 +167,13 @@ class PokerSessionForm extends React.Component {
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
             value={pokerSession.game}
-            options={['NLH', 'PLO'].sort()}
+            options={autofill.game}
             renderInput={(params) =>
               <TextField {...params} label="Game" name='game' />}
           />
           <TextField sx={{flex: 1}} label='Notes' name='notes' value={this.state.notes}
             onChange={(event)=>this.setState({notes: event.target.value})}
+            autoComplete='off'
           />
         </Box>
 
