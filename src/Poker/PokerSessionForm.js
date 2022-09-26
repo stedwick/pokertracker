@@ -5,7 +5,7 @@ import { NumericFormat } from 'react-number-format';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import dayjs from "dayjs";
@@ -182,7 +182,7 @@ class PokerSessionForm extends React.Component {
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
+            <MobileDateTimePicker
               value={Boolean(this.state.startTime) ? this.state.startTime : null}
               renderInput={(props) =>
                 <TextField name='startDateTime'
@@ -198,7 +198,7 @@ class PokerSessionForm extends React.Component {
               label="Start time"
               onChange={this.onStartTimeChange}
             />
-            <DateTimePicker
+            <MobileDateTimePicker
               value={Boolean(this.state.endTime) ? this.state.endTime : null}
               renderInput={(props) =>
                 <TextField name='endDateTime'
