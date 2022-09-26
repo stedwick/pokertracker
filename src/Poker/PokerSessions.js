@@ -138,16 +138,18 @@ export class PokerSessions extends React.Component {
     const pokerSessions = this.state.pokerSessions;
 
     const autofill = {};
-    autofill.location = [...new Set(pokerSessions.map(pSess=>pSess.location))].sort();
+    autofill.location = [...new Set(pokerSessions.map(pSess=>pSess.location))]
+      .sort().filter(el=>el);
     autofill.stakes = [...new Set(pokerSessions.map(pSess=>pSess.stakes))];
     if (autofill.stakes.length < 3) {
       autofill.stakes = [...new Set([...autofill.stakes, '1/2', '1/3', '2/5'])];
     }
     autofill.stakes = autofill.stakes
-      .sort( (a,b) => Number(a.split('/').at(-1)) - Number(b.split('/').at(-1)) );
+      .sort( (a,b) => Number(a.split('/').at(-1)) - Number(b.split('/').at(-1)) )
+      .filter(el=>el);
     autofill.game = [...new Set(
       [...pokerSessions.map(pSess=>pSess.game), "No-Limit Hold'em", "Pot-Limit Omaha"]
-    )].sort();
+    )].sort().filter(el=>el);
 
     return (
       <Card variant="outlined">
