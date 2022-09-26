@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Autocomplete, Button, TextField, Box, Tooltip,
-  FormControlLabel, RadioGroup, Radio, InputAdornment, IconButton} from "@mui/material";
+  FormControlLabel, RadioGroup, Radio, InputAdornment, IconButton, Chip, Stack, Typography} from "@mui/material";
 import { NumericFormat } from 'react-number-format';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +10,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import dayjs from "dayjs";
 import ConfirmDeleteSessionDialog from "../utils/ConfirmDeleteSessionDialog";
+import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
 
 
 class PokerSessionForm extends React.Component {
@@ -20,7 +21,9 @@ class PokerSessionForm extends React.Component {
       endTime: props.pokerSession.endDateTime,
       deleteDialogIsOpen: false,
       notes: props.pokerSession.notes,
-      cashOrTourney: props.pokerSession.cashOrTourney
+      cashOrTourney: props.pokerSession.cashOrTourney,
+      stakes: props.pokerSession.stakes,
+      game: props.pokerSession.game
     }
   }
 
@@ -92,6 +95,58 @@ class PokerSessionForm extends React.Component {
 
     const autofill = this.props.autofill
 
+    const stakesChips = [];
+    autofill.stakes.forEach(stakes => {
+      const selected = (stakes === this.state.stakes);
+      stakesChips.push(
+        <Chip
+          key={stakes}
+          label={stakes}
+          variant={selected ? 'filled' : 'outlined'}
+          onClick={selected ? null : ()=>{this.setState({stakes: stakes})}}
+          onDelete={selected ? ()=>{this.setState({stakes: ''})} : null}
+        />
+      );
+    });
+    if (this.state.stakes && autofill.stakes.findIndex(el=>el===this.state.stakes) === -1) {
+      stakesChips.unshift(
+        <Chip
+          key={this.state.stakes}
+          label={this.state.stakes}
+          icon={<FiberNewOutlinedIcon />}
+          variant='filled'
+          onDelete={()=>{this.setState({stakes: ''})}}
+        />
+      );
+    }
+
+    const gameChips = [];
+    autofill.game.forEach(game => {
+      const gameAbbrev = game.replaceAll(/[^0-9A-Z]/g, '');
+      const selected = (game === this.state.game);
+      gameChips.push(
+        <Chip
+          key={game}
+          label={gameAbbrev}
+          variant={selected ? 'filled' : 'outlined'}
+          onClick={selected ? null : ()=>{this.setState({game: game})}}
+          onDelete={selected ? ()=>{this.setState({game: ''})} : null}
+        />
+      );
+    });
+    if (this.state.game && autofill.game.findIndex(el=>el===this.state.game) === -1) {
+      const gameAbbrev = this.state.game.replaceAll(/[^0-9A-Z]/g, '');
+      gameChips.unshift(
+        <Chip
+          key={this.state.game}
+          label={gameAbbrev}
+          icon={<FiberNewOutlinedIcon />}
+          variant='filled'
+          onDelete={()=>{this.setState({game: ''})}}
+        />
+      );
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <input type="hidden" name='id' value={pokerSession.id}/>
@@ -100,11 +155,18 @@ class PokerSessionForm extends React.Component {
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
-            value={pokerSession.stakes}
             options={autofill.stakes}
+            inputValue={this.state.stakes}
+            onInputChange={(e,v)=>this.setState({stakes: v})}
             renderInput={(params) =>
               <TextField {...params} label="Stakes" name='stakes' />}
           />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2,
+                     width: '100%',
+                     order: {sm: 4}
+                  }}>
+            {stakesChips}
+          </Box>
           <NumericFormat sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
                          prefix='$' thousandSeparator="," customInput={TextField}
                          label='Buy-in' name='buyIn' value={pokerSession.buyIn} autoComplete='off'
@@ -158,19 +220,27 @@ class PokerSessionForm extends React.Component {
           <Autocomplete
             sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
             freeSolo
+            options={autofill.game}
+            inputValue={this.state.game}
+            onInputChange={(e,v)=>this.setState({game: v})}
+            renderInput={(params) =>
+              <TextField {...params} label="Game" name='game' />}
+          />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2,
+                     width: '100%',
+                     order: {sm: 4}
+                  }}>
+            {gameChips}
+          </Box>
+          <Autocomplete
+            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
+            freeSolo
             value={pokerSession.location}
             options={autofill.location}
             renderInput={(params) =>
               <TextField {...params} label="Location" name='location' />}
           />
-          <Autocomplete
-            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}}
-            freeSolo
-            value={pokerSession.game}
-            options={autofill.game}
-            renderInput={(params) =>
-              <TextField {...params} label="Game" name='game' />}
-          />
+
           <TextField sx={{flex: 1}} label='Notes' name='notes' value={this.state.notes}
             onChange={(event)=>this.setState({notes: event.target.value})}
             autoComplete='off'
