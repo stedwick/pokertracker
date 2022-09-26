@@ -38,7 +38,7 @@ export class PokerSessions extends React.Component {
           "id": idGen.next().value,
           "createdAt": nowDateTime,
           "sortDateTime": nowDateTime.subtract(56, 'hour'),
-          "stakes": "",
+          "stakes": "1/2",
           "buyIn": 1000,
           "cashOut": 0,
           "startDateTime": nowDateTime.subtract(56, 'hour'),
@@ -64,6 +64,24 @@ export class PokerSessions extends React.Component {
         }
       ].sort(pSess=>pSess.sortDateTime).reverse()
     };
+  }
+
+  updatePokerSession = (updatedPokerSession) => {
+    this.setState(prevState => {
+      const prevPokerSessions = prevState.pokerSessions;
+      const index = prevPokerSessions.findIndex(
+        pSess => String(pSess.id) === String(updatedPokerSession.id)
+      );
+      if (index !== -1) {
+        const prevPokerSession = prevPokerSessions.at(index);
+        const newPokerSession = {...prevPokerSession, ...updatedPokerSession};
+        const newPokerSessions = prevPokerSessions;
+        newPokerSessions.splice(index, 1, newPokerSession);
+        return {pokerSessions: newPokerSessions};
+      } else {
+        return null;
+      }
+    });
   }
 
   addPokerSession = () => {
@@ -132,7 +150,8 @@ export class PokerSessions extends React.Component {
           <br/>
           {pokerSessions.map((pokerSession)=>{
             return <PokerSession key={pokerSession.id} pokerSession={pokerSession}
-                                 crud={{delete: this.deletePokerSession}}/>
+                                 crud={{update: this.updatePokerSession,
+                                        delete: this.deletePokerSession}}/>
           })}
 
           {pokerSessions.length === 0 &&

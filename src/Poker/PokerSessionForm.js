@@ -18,7 +18,9 @@ class PokerSessionForm extends React.Component {
     this.state = {
       startTime: props.pokerSession.startDateTime,
       endTime: props.pokerSession.endDateTime,
-      deleteDialogIsOpen: false
+      deleteDialogIsOpen: false,
+      notes: props.pokerSession.notes,
+      cashOrTourney: props.pokerSession.cashOrTourney
     }
   }
 
@@ -26,13 +28,16 @@ class PokerSessionForm extends React.Component {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formDataObj = Object.fromEntries(formData);
-    alert('A form was submitted: ' + JSON.stringify(formDataObj, null, 2));
+    this.props.crud.update(formDataObj);
     this.props.closeHandler();
   }
   deleteHandler = () => {
     this.props.crud.delete(this.props.pokerSession);
   }
 
+  onCashOrTourneyChange = (event) => {    
+    this.setState({cashOrTourney: event.target.value});
+  }
   onStartTimeChange = (time) => {
     this.setState({startTime: time});
   }
@@ -164,10 +169,13 @@ class PokerSessionForm extends React.Component {
             renderInput={(params) =>
               <TextField {...params} label="Game" name='game' />}
           />
-          <TextField sx={{flex: 1}} label='Notes' name='notes' value={pokerSession.notes} />
+          <TextField sx={{flex: 1}} label='Notes' name='notes' value={this.state.notes}
+            onChange={(event)=>this.setState({notes: event.target.value})}
+          />
         </Box>
 
-        <RadioGroup defaultValue={pokerSession.cashOrTourney} name="cashOrTourney"
+        <RadioGroup value={this.state.cashOrTourney}
+          onChange={this.onCashOrTourneyChange} name="cashOrTourney"
                     sx={{ flexDirection: 'row', marginTop: 1, marginBottom: 1}}>
           <FormControlLabel value="cashGame" control={<Radio />} label="Cash game" />
           <FormControlLabel value="tournament" control={<Radio />} label="Tournament" />
