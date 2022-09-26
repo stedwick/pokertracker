@@ -17,53 +17,61 @@ export class PokerSessions extends React.Component {
     super(props);
     const idGen = idMaker();
     const nowDateTime = dayjs();
+    const pokerSessions = [
+      {
+        "id": idGen.next().value,
+        "createdAt": nowDateTime,
+        "sortDateTime": nowDateTime.subtract(80, 'hour'),
+        "stakes": "1/3",
+        "buyIn": 500,
+        "cashOut": 700,
+        "startDateTime": nowDateTime.subtract(80, 'hour'),
+        "endDateTime": nowDateTime.subtract(78, 'hour'),
+        "location": "Wynn",
+        "game": "No-Limit Hold'em",
+        "notes": "🍹 Tasty watermelon juice",
+        "cashOrTourney": "cashGame"
+      },
+      {
+        "id": idGen.next().value,
+        "createdAt": nowDateTime,
+        "sortDateTime": nowDateTime.subtract(56, 'hour'),
+        "stakes": "1/2",
+        "buyIn": 1000,
+        "cashOut": 0,
+        "startDateTime": nowDateTime.subtract(56, 'hour'),
+        "endDateTime": nowDateTime.subtract(52, 'hour'),
+        "location": "Aria",
+        "game": "Pot-Limit Omaha",
+        "notes": "Visited PokerGo studio",
+        "cashOrTourney": "tournament"
+      },
+      {
+        "id": idGen.next().value,
+        "createdAt": nowDateTime,
+        "sortDateTime": nowDateTime.subtract(32, 'hour'),
+        "stakes": "2/5",
+        "buyIn": 1000,
+        "cashOut": 1950,
+        "startDateTime": nowDateTime.subtract(32, 'hour'),
+        "endDateTime": nowDateTime.subtract(25, 'hour'),
+        "location": "Ballys",
+        "game": "No-Limit Hold'em",
+        "notes": `WSOP ${nowDateTime.format('YYYY').toString()} let's gooo`,
+        "cashOrTourney": "cashGame"
+      }
+    ]
+    this.sortPokerSessions(pokerSessions);
     this.state = {
       idGen: idGen,
-      pokerSessions: [
-        {
-          "id": idGen.next().value,
-          "createdAt": nowDateTime,
-          "sortDateTime": nowDateTime.subtract(80, 'hour'),
-          "stakes": "1/3",
-          "buyIn": 500,
-          "cashOut": 700,
-          "startDateTime": nowDateTime.subtract(80, 'hour'),
-          "endDateTime": nowDateTime.subtract(78, 'hour'),
-          "location": "Wynn",
-          "game": "No-Limit Hold'em",
-          "notes": "🍹 Tasty watermelon juice",
-          "cashOrTourney": "cashGame"
-        },
-        {
-          "id": idGen.next().value,
-          "createdAt": nowDateTime,
-          "sortDateTime": nowDateTime.subtract(56, 'hour'),
-          "stakes": "1/2",
-          "buyIn": 1000,
-          "cashOut": 0,
-          "startDateTime": nowDateTime.subtract(56, 'hour'),
-          "endDateTime": nowDateTime.subtract(52, 'hour'),
-          "location": "Aria",
-          "game": "Pot-Limit Omaha",
-          "notes": "Visited PokerGo studio",
-          "cashOrTourney": "tournament"
-        },
-        {
-          "id": idGen.next().value,
-          "createdAt": nowDateTime,
-          "sortDateTime": nowDateTime.subtract(32, 'hour'),
-          "stakes": "2/5",
-          "buyIn": 1000,
-          "cashOut": 1950,
-          "startDateTime": nowDateTime.subtract(32, 'hour'),
-          "endDateTime": nowDateTime.subtract(25, 'hour'),
-          "location": "Ballys",
-          "game": "No-Limit Hold'em",
-          "notes": `WSOP ${nowDateTime.format('YYYY').toString()} let's gooo`,
-          "cashOrTourney": "cashGame"
-        }
-      ]
+      pokerSessions: pokerSessions
     };
+  }
+
+  sortPokerSessions = (pSess) => {
+    pSess.sort( (a, b) => {
+      return dayjs(b.startDateTime || b.createdAt) - dayjs(a.startDateTime || a.createdAt)
+    });
   }
 
   updatePokerSession = (updatedPokerSession) => {
@@ -78,6 +86,7 @@ export class PokerSessions extends React.Component {
         delete newPokerSession.isNew;
         const newPokerSessions = prevPokerSessions;
         newPokerSessions.splice(index, 1, newPokerSession);
+        this.sortPokerSessions(newPokerSessions);
         return {pokerSessions: newPokerSessions};
       } else {
         return null;
@@ -136,10 +145,6 @@ export class PokerSessions extends React.Component {
 
   render() {
     const pokerSessions = this.state.pokerSessions;
-    pokerSessions.sort( (a, b) => {
-        return dayjs(b.startDateTime || b.createdAt) - dayjs(a.startDateTime || a.createdAt)
-      }
-    );
 
     const autofill = {};
     autofill.location = [...new Set(pokerSessions.map(pSess=>pSess.location))]
