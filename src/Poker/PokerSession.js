@@ -5,6 +5,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import PokerSessionForm from "./PokerSessionForm";
+import FiberNewIcon from '@mui/icons-material/FiberNew';
+import { orange } from '@mui/material/colors';
 
 export class PokerSession extends React.Component {
   constructor(props) {
@@ -29,6 +31,15 @@ export class PokerSession extends React.Component {
       sessionIcon = <EmojiEventsOutlinedIcon />
     }
 
+    let isNew = false;
+    if (pokerSession.isNew) {
+      isNew = 
+        <React.Fragment>
+          <FiberNewIcon sx={{ color: orange[500] }} />
+          &nbsp;
+        </React.Fragment>
+    }
+
     return (
       <Accordion expanded={this.state.expanded}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
@@ -37,6 +48,7 @@ export class PokerSession extends React.Component {
                       visibility={Boolean(pokerSession.endDateTime) ? 'hidden' : 'visible'}>
             &nbsp;•&nbsp;
           </Typography>
+          {isNew}
           <Typography>{location}</Typography>
         </AccordionSummary>
         <AccordionDetails>

@@ -75,6 +75,7 @@ export class PokerSessions extends React.Component {
       if (index !== -1) {
         const prevPokerSession = prevPokerSessions.at(index);
         const newPokerSession = {...prevPokerSession, ...updatedPokerSession};
+        delete newPokerSession.isNew;
         const newPokerSessions = prevPokerSessions;
         newPokerSessions.splice(index, 1, newPokerSession);
         return {pokerSessions: newPokerSessions};
@@ -115,6 +116,7 @@ export class PokerSessions extends React.Component {
         "cashOrTourney": "cashGame"
       };
     }
+    newSession.isNew = true;
     this.setState(prevState => (
       {pokerSessions: [newSession, ...prevState.pokerSessions]})
     );
