@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Autocomplete, Button, TextField, Box, Tooltip,
-  FormControlLabel, RadioGroup, Radio, InputAdornment, IconButton, Chip, Stack, Typography} from "@mui/material";
+  FormControlLabel, RadioGroup, Radio, InputAdornment, IconButton, Chip} from "@mui/material";
 import { NumericFormat } from 'react-number-format';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,9 +8,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import dayjs from "dayjs";
 import ConfirmDeleteSessionDialog from "../utils/ConfirmDeleteSessionDialog";
 import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
+const dayjs = require('dayjs');
 
 
 class PokerSessionForm extends React.Component {
@@ -159,7 +159,7 @@ class PokerSessionForm extends React.Component {
             inputValue={this.state.stakes}
             onInputChange={(e,v)=>this.setState({stakes: v})}
             renderInput={(params) =>
-              <TextField {...params} label="Stakes" name='stakes' />}
+              <TextField {...params} label="Stakes" name='stakes' autoComplete='off' />}
           />
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2,
                      width: '100%',
@@ -186,6 +186,7 @@ class PokerSessionForm extends React.Component {
               value={Boolean(this.state.startTime) ? this.state.startTime : null}
               renderInput={(props) =>
                 <TextField name='startDateTime'
+                           autoComplete='off'
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
                            InputProps={{endAdornment:
                                <InputAdornment position="end">
@@ -202,6 +203,7 @@ class PokerSessionForm extends React.Component {
               value={Boolean(this.state.endTime) ? this.state.endTime : null}
               renderInput={(props) =>
                 <TextField name='endDateTime'
+                           autoComplete='off'
                            sx={{flex: {sm: 1}, flexBasis: {xs: '100%', sm: undefined}}} {...props}
                            InputProps={{endAdornment:
                                <InputAdornment position="end">
@@ -224,7 +226,7 @@ class PokerSessionForm extends React.Component {
             inputValue={this.state.game}
             onInputChange={(e,v)=>this.setState({game: v})}
             renderInput={(params) =>
-              <TextField {...params} label="Game" name='game' />}
+              <TextField {...params} label="Game" name='game' autoComplete='off' />}
           />
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2,
                      width: '100%',
@@ -238,7 +240,7 @@ class PokerSessionForm extends React.Component {
             value={pokerSession.location}
             options={autofill.location}
             renderInput={(params) =>
-              <TextField {...params} label="Location" name='location' />}
+              <TextField {...params} label="Location" name='location' autoComplete='off' />}
           />
 
           <TextField sx={{flex: 1}} label='Notes' name='notes' value={this.state.notes}
