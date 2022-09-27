@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import {Accordion, AccordionSummary, Typography, AccordionDetails} from '@mui/material';
+import {Accordion, AccordionSummary, Typography, AccordionDetails, Box, Chip} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import PokerSessionForm from "./PokerSessionForm";
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import { orange } from '@mui/material/colors';
+const dayjs = require('dayjs');
 
 export class PokerSession extends React.Component {
   constructor(props) {
@@ -43,13 +44,51 @@ export class PokerSession extends React.Component {
     return (
       <Accordion expanded={this.state.expanded}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
-          {sessionIcon}
-          <Typography color="error" sx={{fontWeight: 'bold'}}
-                      visibility={Boolean(pokerSession.endDateTime) ? 'hidden' : 'visible'}>
-            &nbsp;•&nbsp;
-          </Typography>
-          {isNew}
-          <Typography>{location}</Typography>
+          <Box display='flex' sx={{flexDirection: 'column'}}>
+            <Box display='flex'>
+              {sessionIcon}
+              <Typography color="error" sx={{fontWeight: 'bold'}}
+                          visibility={Boolean(pokerSession.endDateTime) ? 'hidden' : 'visible'}>
+                &nbsp;•&nbsp;
+              </Typography>
+              {isNew}
+              <Typography>{location}</Typography>
+            </Box>
+            <Box display='flex' color="text.secondary" sx={{gap: 1, mt: 0.5, alignItems: 'center', flexWrap: 'wrap'}}>
+              {dayjs(pokerSession.startDateTime).isValid() &&
+                <Typography variant='body2'>
+                  {dayjs().isSame(dayjs(pokerSession.startDateTime), 'year')
+                    ? dayjs(pokerSession.startDateTime).format("MMM D")
+                    : dayjs(pokerSession.startDateTime).format("MMM D, 'YY")}
+                </Typography>
+              }
+              {pokerSession.stakes !== '' && 
+                <Chip
+                  sx={{color: "text.secondary"}}
+                  key={pokerSession.stakes}
+                  label={pokerSession.stakes}
+                  size='small'
+                  variant='outlined'
+                />
+              }
+              {pokerSession.game !== '' && 
+                <Chip
+                  sx={{color: "text.secondary"}}
+                  key={pokerSession.game}
+                  label={pokerSession.game.replaceAll(/[^0-9A-Z]/g, '')}
+                  size='small'
+                  variant='outlined'
+                />
+              }
+            </Box>
+            {/* {pokerSession.notes !== '' &&
+              <Box display='flex' color="text.secondary" sx={{mt: 0.5}}>
+                <Typography noWrap variant='body2' sx={{maxWidth: '50%'}}>
+                  {pokerSession.notes}
+                </Typography>
+              </Box>
+            } */}
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <PokerSessionForm pokerSession={this.props.pokerSession}

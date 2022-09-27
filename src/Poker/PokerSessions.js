@@ -36,7 +36,7 @@ export class PokerSessions extends React.Component {
         "id": idGen.next().value,
         "createdAt": nowDateTime,
         "sortDateTime": nowDateTime.subtract(56, 'hour'),
-        "stakes": "1/2",
+        "stakes": "",
         "buyIn": 1000,
         "cashOut": 0,
         "startDateTime": nowDateTime.subtract(56, 'hour'),
@@ -92,7 +92,7 @@ export class PokerSessions extends React.Component {
         return null;
       }
     });
-  }
+  } 
 
   addPokerSession = () => {
     const nowDateTime = dayjs();
