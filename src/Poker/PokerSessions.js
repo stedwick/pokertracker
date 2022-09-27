@@ -43,7 +43,7 @@ export class PokerSessions extends React.Component {
         "endDateTime": nowDateTime.subtract(52, 'hour'),
         "location": "Aria",
         "game": "Pot-Limit Omaha",
-        "notes": "Visited PokerGo studio",
+        "notes": "",
         "cashOrTourney": "tournament"
       },
       {
@@ -57,7 +57,7 @@ export class PokerSessions extends React.Component {
         "endDateTime": nowDateTime.subtract(25, 'hour'),
         "location": "Ballys",
         "game": "No-Limit Hold'em",
-        "notes": `WSOP ${nowDateTime.format('YYYY').toString()} let's gooo`,
+        "notes": "",
         "cashOrTourney": "cashGame"
       }
     ]
@@ -159,6 +159,8 @@ export class PokerSessions extends React.Component {
     autofill.game = [...new Set(
       [...pokerSessions.map(pSess=>pSess.game), "No-Limit Hold'em", "Pot-Limit Omaha"]
     )].sort().filter(el=>el);
+
+    // window.autofill = autofill;
 
     return (
       <Card variant="outlined">

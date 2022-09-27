@@ -43,18 +43,26 @@ export class PokerSession extends React.Component {
 
     return (
       <Accordion expanded={this.state.expanded}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}>
-          <Box display='flex' sx={{flexDirection: 'column'}}>
-            <Box display='flex'>
+        {/* Custom CSS in index.html */}
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={this.toggleExpanded}
+          className="minWidth">
+          <Box display='flex' sx={{flexDirection: 'column', minWidth: 0}}>
+            <Box display='flex'> 
+              {/* line 1 */}
               {sessionIcon}
               <Typography color="error" sx={{fontWeight: 'bold'}}
                           visibility={Boolean(pokerSession.endDateTime) ? 'hidden' : 'visible'}>
                 &nbsp;•&nbsp;
               </Typography>
               {isNew}
-              <Typography>{location}</Typography>
+              <Typography noWrap sx={{minWidth: 0}}>
+                {location}
+              </Typography>
             </Box>
-            <Box display='flex' color="text.secondary" sx={{gap: 1, mt: 0.5, alignItems: 'center', flexWrap: 'wrap'}}>
+
+            <Box display='flex' color="text.secondary"
+              sx={{gap: 1, mt: 0.5, alignItems: 'center', flexWrap: 'wrap'}}>
+              {/* Line 2 */}
               {dayjs(pokerSession.startDateTime).isValid() &&
                 <Typography variant='body2'>
                   {dayjs().isSame(dayjs(pokerSession.startDateTime), 'year')
@@ -62,34 +70,27 @@ export class PokerSession extends React.Component {
                     : dayjs(pokerSession.startDateTime).format("MMM D, 'YY")}
                 </Typography>
               }
-              {pokerSession.stakes !== '' && 
-                <Chip
-                  sx={{color: "text.secondary"}}
-                  key={pokerSession.stakes}
-                  label={pokerSession.stakes}
-                  size='small'
-                  variant='outlined'
-                />
+              {pokerSession.stakes && 
+                <Typography variant='body2'>
+                  {pokerSession.stakes}
+                </Typography>
               }
-              {pokerSession.game !== '' && 
-                <Chip
-                  sx={{color: "text.secondary"}}
-                  key={pokerSession.game}
-                  label={pokerSession.game.replaceAll(/[^0-9A-Z]/g, '')}
-                  size='small'
-                  variant='outlined'
-                />
+              {pokerSession.game &&               
+                <Typography variant='body2'>
+                  {pokerSession.game.replaceAll(/[^0-9A-Z]/g, '')}
+                </Typography>
               }
             </Box>
-            {/* {pokerSession.notes !== '' &&
+            {pokerSession.notes &&
               <Box display='flex' color="text.secondary" sx={{mt: 0.5}}>
-                <Typography noWrap variant='body2' sx={{maxWidth: '50%'}}>
+                <Typography noWrap variant='body2' sx={{minWidth: 0}}>
                   {pokerSession.notes}
                 </Typography>
               </Box>
-            } */}
+            }
           </Box>
         </AccordionSummary>
+
         <AccordionDetails>
           <PokerSessionForm pokerSession={this.props.pokerSession}
             closeHandler={this.toggleExpanded} crud={this.props.crud}
