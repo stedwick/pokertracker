@@ -381,7 +381,7 @@ class PokerSessionForm extends React.Component {
           <FormControlLabel
             value="cashGame"
             control={<Radio />}
-            label="Cash game"
+            label="Cash"
           />
           <FormControlLabel
             value="tournament"

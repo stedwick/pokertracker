@@ -87,14 +87,14 @@ class PokerSession extends React.Component {
           }}
         >
           <Box display="flex" sx={{ flexDirection: "column", minWidth: 0 }}>
-            <Box display="flex" sx={{ gap: 0.75 }}>
+            <Box display="flex" sx={{ gap: 1 }}>
               {/* line 1 */}
               {sessionIcon}
               <Typography
                 color="error"
                 sx={{ fontWeight: "bold", transform: 'scale(2)' }}
-                visibility={
-                  Boolean(pokerSession.endDateTime) ? "hidden" : undefined
+                display={
+                  Boolean(pokerSession.endDateTime) ? "none" : undefined
                 }
               >
                 •
