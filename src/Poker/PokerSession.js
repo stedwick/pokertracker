@@ -15,13 +15,15 @@ import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
 import PokerSessionForm from "./PokerSessionForm";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { orange } from "@mui/material/colors";
+import currency from "currency.js";
 const dayjs = require("dayjs");
+window.currency = currency;
 
-export class PokerSession extends React.Component {
+class PokerSession extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
+      expanded: false
     };
   }
 
@@ -45,10 +47,33 @@ export class PokerSession extends React.Component {
       isNew = (
         <React.Fragment>
           <FiberNewIcon sx={{ color: orange[500] }} />
-          &nbsp;
         </React.Fragment>
       );
     }
+
+    let profit = false;
+    let profitEl = false;
+    let AccordionSummaryBgColor = false;
+    if ((pokerSession.cashOut || pokerSession.cashOut === 0) && (pokerSession.buyIn || pokerSession.buyIn === 0)) {
+      profit = currency(pokerSession.cashOut).subtract(currency(pokerSession.buyIn));
+    }
+    if (profit) {
+      let color, plusOrMinus;
+      if (profit > 0) {
+        color = "success.main";
+        plusOrMinus = '+';
+        AccordionSummaryBgColor = '#EEFFEE';
+      } else if (profit < 0) {
+        color = "error.main";
+        AccordionSummaryBgColor = '#FFEEEE';
+        // plusOrMinus = '-';
+      } else { }
+      profitEl = 
+        <Typography sx={{color: color}}>
+          {plusOrMinus}{currency(profit, {precision: 0}).format()}
+        </Typography>
+    }
+
 
     return (
       <Accordion expanded={this.state.expanded}>
@@ -57,21 +82,25 @@ export class PokerSession extends React.Component {
           expandIcon={<ExpandMoreIcon />}
           onClick={this.toggleExpanded}
           className="minWidth"
+          sx={{
+            backgroundColor: (theme) => (theme.palette.mode === 'light' ?AccordionSummaryBgColor : undefined)
+          }}
         >
           <Box display="flex" sx={{ flexDirection: "column", minWidth: 0 }}>
-            <Box display="flex">
+            <Box display="flex" sx={{ gap: 0.75 }}>
               {/* line 1 */}
               {sessionIcon}
               <Typography
                 color="error"
-                sx={{ fontWeight: "bold" }}
+                sx={{ fontWeight: "bold", transform: 'scale(2)' }}
                 visibility={
-                  Boolean(pokerSession.endDateTime) ? "hidden" : "visible"
+                  Boolean(pokerSession.endDateTime) ? "hidden" : undefined
                 }
               >
-                &nbsp;•&nbsp;
+                •
               </Typography>
               {isNew}
+              {profitEl}
               <Typography noWrap sx={{ minWidth: 0 }}>
                 {location}
               </Typography>
