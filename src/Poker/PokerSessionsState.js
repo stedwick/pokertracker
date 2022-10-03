@@ -1,4 +1,6 @@
 import * as React from "react";
+import currency from "currency.js";
+// window.currency = currency;
 const dayjs = require("dayjs");
 
 const PokerSessionsContext = React.createContext({ values: [] });
@@ -81,9 +83,37 @@ export class PokerSessionsState extends React.Component {
         create: this.addPokerSession,
         update: this.updatePokerSession,
         delete: this.deletePokerSession,
+        calcSessionProfit: this.calcSessionProfit,
+        calcTotalProfit: this.calcTotalProfit,
+        sessionIsFinished: this.sessionIsFinished,
       },
     };
   }
+
+  sessionIsFinished = (pokerSession) => {
+    return (
+      ((pokerSession.cashOut || pokerSession.cashOut === 0) &&
+      (pokerSession.buyIn || pokerSession.buyIn === 0))
+      || pokerSession.endDateTime
+    );
+  };
+
+  calcTotalProfit = (pokerSessions) => {
+    return pokerSessions.reduce((sum, pSess) => {
+      sum = sum.add(this.calcSessionProfit(pSess, true));
+      // console.log(`Sessions profit: ${this.calcSessionProfit(pSess).format()} ... Running total: ${sum.format()}`);
+      return sum;
+    }, currency());
+  };
+
+  calcSessionProfit = (pokerSession, whileRunning = false) => {
+    let profit = currency();
+    if (this.sessionIsFinished(pokerSession) || whileRunning) {
+      profit = profit.add(pokerSession.cashOut).subtract(pokerSession.buyIn);
+      // console.log(`${pokerSession.cashOut} - ${pokerSession.buyIn} = ${profit.format()}`);
+    }
+    return profit;
+  };
 
   sortPokerSessions = (pSess) => {
     pSess.sort((a, b) => {
@@ -102,6 +132,22 @@ export class PokerSessionsState extends React.Component {
       );
       if (index !== -1) {
         const prevPokerSession = prevPokerSessions.at(index);
+        
+        if (
+          (updatedPokerSession.cashOut && !prevPokerSession.cashOut)
+          && (!updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
+        ) {
+          updatedPokerSession.endDateTime = dayjs();
+          updatedPokerSession.key = dayjs().unix();
+        }
+        if (
+          (updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
+          && (!updatedPokerSession.cashOut && !prevPokerSession.cashOut)
+        ) {
+          updatedPokerSession.cashOut = 0;
+          updatedPokerSession.key = dayjs().unix();
+        }
+
         const newPokerSession = { ...prevPokerSession, ...updatedPokerSession };
         delete newPokerSession.isNew;
         const newPokerSessions = prevPokerSessions;

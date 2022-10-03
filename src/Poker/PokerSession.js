@@ -16,8 +16,8 @@ import PokerSessionForm from "./PokerSessionForm";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { orange } from "@mui/material/colors";
 import currency from "currency.js";
+// window.currency = currency;
 const dayjs = require("dayjs");
-window.currency = currency;
 
 class PokerSession extends React.Component {
   constructor(props) {
@@ -34,6 +34,8 @@ class PokerSession extends React.Component {
   render() {
     const location = this.props.pokerSession.location;
     const pokerSession = this.props.pokerSession;
+    const crud = this.props.crud;
+
     let sessionIcon;
     if (pokerSession.cashOrTourney === "cashGame") {
       sessionIcon = <LocalAtmOutlinedIcon />;
@@ -51,13 +53,10 @@ class PokerSession extends React.Component {
       );
     }
 
-    let profit = false;
+    let profit = crud.calcSessionProfit(pokerSession);
     let profitEl = false;
     let AccordionSummaryBgColor = false;
-    if ((pokerSession.cashOut || pokerSession.cashOut === 0) && (pokerSession.buyIn || pokerSession.buyIn === 0)) {
-      profit = currency(pokerSession.cashOut).subtract(currency(pokerSession.buyIn));
-    }
-    if (profit) {
+    if (crud.sessionIsFinished(pokerSession)) {
       let color, plusOrMinus;
       if (profit > 0) {
         color = "success.main";
@@ -140,6 +139,7 @@ class PokerSession extends React.Component {
 
         <AccordionDetails>
           <PokerSessionForm
+            key={this.props.pokerSession.key || undefined}
             pokerSession={this.props.pokerSession}
             closeHandler={this.toggleExpanded}
             crud={this.props.crud}
