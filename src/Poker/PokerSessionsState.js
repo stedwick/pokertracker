@@ -77,6 +77,11 @@ export class PokerSessionsState extends React.Component {
     this.state = {
       idGen: idGen,
       pokerSessions: pokerSessions,
+      crud: {
+        create: this.addPokerSession,
+        update: this.updatePokerSession,
+        delete: this.deletePokerSession,
+      },
     };
   }
 
@@ -162,16 +167,7 @@ export class PokerSessionsState extends React.Component {
 
   render() {
     return (
-      <PokerSessionsContext.Provider
-        value={{
-          values: this.state.pokerSessions,
-          crud: {
-            create: this.addPokerSession,
-            update: this.updatePokerSession,
-            delete: this.deletePokerSession,
-          },
-        }}
-      >
+      <PokerSessionsContext.Provider value={this.state}>
         {this.props.children}
       </PokerSessionsContext.Provider>
     );

@@ -1,8 +1,9 @@
 import React from "react";
-import {Container} from '@mui/material';
+import { Container } from "@mui/material";
 import PokerAppBar from "./layout/PokerAppBar";
-import {PnlCard} from "./Poker/PnlCard";
+import { PnlCard } from "./Poker/PnlCard";
 import PokerSessions from "./Poker/PokerSessions";
+import PokerSessionsState from "./Poker/PokerSessionsState";
 
 function App() {
   return (
@@ -10,10 +11,12 @@ function App() {
       <PokerAppBar />
       <Container>
         <br />
-        <PnlCard />
-        <br/>
-        <PokerSessions/>
-        <br/>
+        <PokerSessionsState>
+          <PnlCard />
+          <br />
+          <PokerSessions />
+        </PokerSessionsState>
+        <br />
       </Container>
     </div>
   );
