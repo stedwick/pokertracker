@@ -42,7 +42,7 @@ class PokerSessionForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
     const formDataObj = Object.fromEntries(formData);
     this.props.crud.update(formDataObj);
     this.props.closeHandler();
