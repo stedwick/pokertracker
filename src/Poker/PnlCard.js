@@ -24,7 +24,7 @@ export class PnlCard extends React.Component {
   }
 
   handleInitRoll = (money) => {
-    this.setState({initRoll: money});
+    this.setState({ initRoll: money });
   };
 
   render() {
@@ -32,6 +32,13 @@ export class PnlCard extends React.Component {
     const balance = crud
       .calcTotalProfit(pokerSessions)
       .add(this.state.initRoll);
+    let color = "text.primary";
+    const rounded = Number(currency(balance, { precision: 0 }).value);
+    if (rounded > 0) {
+      color = "success.main";
+    } else if (rounded < 0) {
+      color = "error.main";
+    }
 
     return (
       <Card>
@@ -49,11 +56,7 @@ export class PnlCard extends React.Component {
           <Typography variant="h6" align="center">
             Bankroll
           </Typography>
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{ color: "success.main" }}
-          >
+          <Typography variant="h4" align="center" sx={{ color: color }}>
             {currency(balance, { precision: 0 }).format()}
           </Typography>
         </CardContent>
@@ -85,8 +88,25 @@ function BankrollPopover(props) {
     <>
       <Box sx={{ position: "absolute", right: "0", marginRight: 2 }}>
         <IconButton
-          sx={{ borderColor: "primary.main", border: 1, borderRadius: 2 }}
-          color="secondary"
+          // sx={(theme) => (
+          //   theme.palette.mode === "light"
+          //     ? {
+          //         border: 1,
+          //         borderRadius: 2,
+          //         // color: "#9c27b0",
+          //         color: "primary.main"
+          //       }
+          //     : {
+          //         border: 1,
+          //         borderRadius: 2,
+          //         color: "primary.main"
+          //       }
+          // )}
+          sx={{
+            border: 1,
+            borderRadius: 2,
+          }}
+          color="primary"
           variant="outlined"
           size="small"
           onClick={handleClick}
@@ -115,6 +135,7 @@ function BankrollPopover(props) {
               prefix="$"
               thousandSeparator=","
               customInput={TextField}
+              // customInput={props => <TextField inputRef={el=>inputEl=el} {...props} autoFocus />}
               label="Initial Bankroll"
               name="initRoll"
               value={props.money}
@@ -122,6 +143,7 @@ function BankrollPopover(props) {
               type="tel" // sigh
               inputMode="decimal"
               pattern="[0-9.,$€£]*"
+              autoFocus
             />
           </form>
         </Container>
