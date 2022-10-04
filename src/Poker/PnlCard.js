@@ -90,6 +90,7 @@ function BankrollPopover(props) {
           variant="outlined"
           size="small"
           onClick={handleClick}
+          disableRipple
         >
           <EditIcon />
         </IconButton>
