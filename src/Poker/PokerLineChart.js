@@ -2,7 +2,13 @@ import React, { useContext } from "react";
 import currency from "currency.js";
 import { PokerSessionsContext } from "./PokerSessionsState";
 
-import { LineChart, Line, ResponsiveContainer, Tooltip, ReferenceLine } from "recharts";
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+//   Tooltip,
+  ReferenceLine,
+} from "recharts";
 import produce from "immer";
 
 export default function PokerLineChart() {
@@ -10,7 +16,7 @@ export default function PokerLineChart() {
   const sortedPokerSessions = produce(pokerSessions, (draft) =>
     draft.reverse()
   );
-  const chartData = [{profit: 0}];
+  const chartData = [{ profit: 0 }];
 
   sortedPokerSessions.reduce((sum, pSess, i) => {
     const profit = crud.calcSessionProfit(pSess, true);
@@ -27,9 +33,10 @@ export default function PokerLineChart() {
           dataKey="profit"
           stroke="#8884d8"
           strokeWidth={2}
+          dot={false}
         />
         <ReferenceLine y={0} stroke="orange" strokeDasharray="5 5" />
-        <Tooltip />
+        {/* <Tooltip /> */}
       </LineChart>
     </ResponsiveContainer>
   );
