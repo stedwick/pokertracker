@@ -5,7 +5,8 @@ import { PnlCard } from "./Poker/PnlCard";
 import PokerSessions from "./Poker/PokerSessions";
 import PokerSessionsState from "./Poker/PokerSessionsState";
 
-import { LineChart, Line, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { ResponsiveContainer, BarChart, Bar } from "recharts";
+import PokerLineChart from './Poker/PokerLineChart.js';
 
 const data = [
   {
@@ -52,16 +53,6 @@ const data = [
   },
 ];
 
-function PhilsLine() {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data}>
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-}
-
 function PhilsBar() {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -82,7 +73,7 @@ function App() {
           <PnlCard />
           <br />
           <Box height="100px" width="100%">
-            <PhilsLine />
+            <PokerLineChart />
           </Box>
           <Box height="100px" width="100%">
             <PhilsBar />
