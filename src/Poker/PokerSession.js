@@ -23,7 +23,7 @@ class PokerSession extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
     };
   }
 
@@ -60,29 +60,37 @@ class PokerSession extends React.Component {
       let color, plusOrMinus;
       if (profit > 0) {
         color = "success.main";
-        plusOrMinus = '+';
-        AccordionSummaryBgColor = '#EEFFEE';
+        plusOrMinus = "+";
+        AccordionSummaryBgColor = "#EEFFEE";
       } else if (profit < 0) {
         color = "error.main";
-        AccordionSummaryBgColor = '#FFEEEE';
+        AccordionSummaryBgColor = "#FFEEEE";
         // plusOrMinus = '-';
-      } else { }
-      profitEl = 
-        <Typography sx={{color: color}}>
-          {plusOrMinus}{currency(profit, {precision: 0}).format()}
+      } else {
+      }
+      profitEl = (
+        <Typography sx={{ color: color }}>
+          {plusOrMinus}
+          {currency(profit, { precision: 0 }).format()}
         </Typography>
+      );
     }
 
-
     return (
-      <Accordion expanded={this.state.expanded}>
+      <Accordion
+        expanded={this.state.expanded}
+        TransitionProps={{ unmountOnExit: true }}
+      >
         {/* Custom CSS in index.html */}
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           onClick={this.toggleExpanded}
           className="minWidth"
           sx={{
-            backgroundColor: (theme) => (theme.palette.mode === 'light' ?AccordionSummaryBgColor : undefined)
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? AccordionSummaryBgColor
+                : undefined,
           }}
         >
           <Box display="flex" sx={{ flexDirection: "column", minWidth: 0 }}>
@@ -91,10 +99,8 @@ class PokerSession extends React.Component {
               {sessionIcon}
               <Typography
                 color="error"
-                sx={{ fontWeight: "bold", transform: 'scale(2)' }}
-                display={
-                  Boolean(pokerSession.endDateTime) ? "none" : undefined
-                }
+                sx={{ fontWeight: "bold", transform: "scale(2)" }}
+                display={Boolean(pokerSession.endDateTime) ? "none" : undefined}
               >
                 •
               </Typography>
@@ -128,7 +134,7 @@ class PokerSession extends React.Component {
               )}
             </Box>
             {pokerSession.notes && (
-              <Box display="flex" color="text.secondary" sx={{ mt: 0.5 }}>
+              <Box display="flex" sx={{ mt: 0.5 }}>
                 <Typography noWrap variant="body2" sx={{ minWidth: 0 }}>
                   {pokerSession.notes}
                 </Typography>
@@ -139,7 +145,7 @@ class PokerSession extends React.Component {
 
         <AccordionDetails>
           <PokerSessionForm
-            key={this.props.pokerSession.key || undefined}
+            // key={this.props.pokerSession.key || undefined}
             pokerSession={this.props.pokerSession}
             closeHandler={this.toggleExpanded}
             crud={this.props.crud}

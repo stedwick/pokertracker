@@ -1,6 +1,7 @@
 import * as React from "react";
 import currency from "currency.js";
 import demoData, {idGen} from "../utils/DemoData.js";
+import philData from "../utils/PhilData.js";
 // window.currency = currency;
 const dayjs = require("dayjs");
 
@@ -9,7 +10,8 @@ const PokerSessionsContext = React.createContext({ values: [] });
 export class PokerSessionsState extends React.Component {
   constructor(props) {
     super(props);
-    const pokerSessions = demoData;
+    // const pokerSessions = demoData;
+    const pokerSessions = philData;
     this.sortPokerSessions(pokerSessions);
     this.state = {
       idGen: idGen,
@@ -73,14 +75,14 @@ export class PokerSessionsState extends React.Component {
           && (!updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
         ) {
           updatedPokerSession.endDateTime = dayjs();
-          updatedPokerSession.key = dayjs().unix();
+          // updatedPokerSession.key = dayjs().unix();
         }
         if (
           (updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
           && (!updatedPokerSession.cashOut && !prevPokerSession.cashOut)
         ) {
           updatedPokerSession.cashOut = 0;
-          updatedPokerSession.key = dayjs().unix();
+          // updatedPokerSession.key = dayjs().unix();
         }
 
         const newPokerSession = { ...prevPokerSession, ...updatedPokerSession };
