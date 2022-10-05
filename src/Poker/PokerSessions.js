@@ -9,35 +9,20 @@ import InfiniteScroll from "react-infinite-scroller";
 export class PokerSessions extends React.Component {
   constructor(props) {
     super(props);
-    // this.loadingPsessions = false;
     this.state = {
-      displayedPsessIndex: 0,
-      // loadingPsessions: false,
+      displayedPsessIndex: 20,
     };
   }
 
   loadMorePsessions = () => {
-    this.setState((prevState) => {
-      return {
-        displayedPsessIndex: prevState.displayedPsessIndex + 10,
-      };
-    });
+    // setTimeout(()=>{
+      this.setState((prevState) => {
+        return {
+          displayedPsessIndex: prevState.displayedPsessIndex + 20,
+        };
+      });
+    // }, 5000);
   };
-  // if (this.loadingPsessions || this.state.loadingPsessions) {
-  // } else {
-  //   this.loadingPsessions = true;
-  //   this.setState({ loadingPsessions: true });
-  //   setTimeout(() => {
-  //     this.loadingPsession = false;
-  //     this.setState((prevState) => {
-  //       return {
-  //         loadingPsessions: false,
-  //         displayedPsessIndex: prevState.displayedPsessIndex + 10,
-  //       };
-  //     });
-  //   }, 5000);
-  // }
-  // };
 
   getAutofill = (pokerSessions) => {
     const autofill = {};

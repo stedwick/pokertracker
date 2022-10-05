@@ -23,7 +23,7 @@ function App() {
             <PokerLineChart />
           </Box>
           <Typography sx={{ ml: 2 }}>
-            Bar chart of 30 most recent sessions.
+            Bar chart of 25 most recent sessions.
           </Typography>
           <Box sx={{height: {xs: 50, sm: 100} }} width="100%">
             <PokerBarChart />
