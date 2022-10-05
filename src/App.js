@@ -10,29 +10,29 @@ import PokerBarChart from "./Poker/PokerBarChart.js";
 function App() {
   return (
     <div className="App">
-      <PokerAppBar />
-      <Container>
-        <br />
-        <PokerSessionsState>
+      <PokerSessionsState>
+        <PokerAppBar />
+        <Container>
+          <br />
           <PnlCard />
           <br />
           <Typography sx={{ ml: 2 }}>
             Line chart of profit over time.
           </Typography>
-          <Box sx={{height: {xs: 100, sm: 200} }} width="100%">
+          <Box sx={{ height: { xs: 100, sm: 200 } }} width="100%">
             <PokerLineChart />
           </Box>
           <Typography sx={{ ml: 2 }}>
             Bar chart of 25 most recent sessions.
           </Typography>
-          <Box sx={{height: {xs: 50, sm: 100} }} width="100%">
+          <Box sx={{ height: { xs: 50, sm: 100 } }} width="100%">
             <PokerBarChart />
           </Box>
           <br />
           <PokerSessions />
-        </PokerSessionsState>
-        <br />
-      </Container>
+          <br />
+        </Container>
+      </PokerSessionsState>
     </div>
   );
 }
