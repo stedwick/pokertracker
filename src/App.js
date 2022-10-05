@@ -19,13 +19,13 @@ function App() {
           <Typography sx={{ ml: 2 }}>
             Line chart of profit over time.
           </Typography>
-          <Box height="100px" width="100%">
+          <Box sx={{height: {xs: 100, sm: 200} }} width="100%">
             <PokerLineChart />
           </Box>
           <Typography sx={{ ml: 2 }}>
-            Bar chart of 20 most recent sessions.
+            Bar chart of 30 most recent sessions.
           </Typography>
-          <Box height="50px" width="100%">
+          <Box sx={{height: {xs: 50, sm: 100} }} width="100%">
             <PokerBarChart />
           </Box>
           <br />

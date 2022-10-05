@@ -1,36 +1,48 @@
 import React, { useContext } from "react";
 import currency from "currency.js";
 import { PokerSessionsContext } from "./PokerSessionsState";
+import { LTTB } from "downsample";
+// import produce from "immer";
 
 import {
   LineChart,
   Line,
   ResponsiveContainer,
-//   Tooltip,
+  //   Tooltip,
   ReferenceLine,
 } from "recharts";
-import produce from "immer";
 
 export default function PokerLineChart() {
   const { pokerSessions, crud } = useContext(PokerSessionsContext);
-  const sortedPokerSessions = produce(pokerSessions, (draft) =>
-    draft.reverse()
-  );
-  const chartData = [{ profit: 0 }];
 
-  sortedPokerSessions.reduce((sum, pSess, i) => {
-    const profit = crud.calcSessionProfit(pSess, true);
-    sum = sum.add(profit);
-    chartData.push({ profit: Number(sum.value) });
-    return sum;
-  }, currency(0, { precision: 0 }));
+  const pokerSessionsProfit = pokerSessions.map((pSess) => {
+    return Number(
+      currency(crud.calcSessionProfit(pSess, true), { precision: 0 })
+    );
+  });
+  pokerSessionsProfit.reverse();
+  pokerSessionsProfit.push(0);
+  //   const sortedPokerSessions = produce(pokerSessions, (draft) =>
+  //     draft.reverse()
+  //   );
+  const pokerSessionsRunningTotal = [];
+  pokerSessionsProfit.reduce((sum, profit, i) => {
+    const total = sum + profit;
+    pokerSessionsRunningTotal.push({
+      x: i,
+      y: total,
+    });
+    return total;
+  }, 0);
+
+  const downsampled = LTTB(pokerSessionsRunningTotal, 100);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={chartData}>
+      <LineChart data={downsampled}>
         <Line
           type="monotone"
-          dataKey="profit"
+          dataKey="y"
           stroke="#8884d8"
           strokeWidth={2}
           dot={false}

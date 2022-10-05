@@ -14,7 +14,7 @@ export default function PokerBarChart() {
   const { pokerSessions, crud } = useContext(PokerSessionsContext);
   const theme = useTheme();
 
-  const chartData = pokerSessions.map((pSess) => {
+  const chartData = pokerSessions.slice(0, 30).map((pSess) => {
     const profit = Number(
       currency(crud.calcSessionProfit(pSess, true), { precision: 0 })
     );

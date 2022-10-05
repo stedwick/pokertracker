@@ -14,6 +14,7 @@
     "csv": "^6.2.0",
     "currency.js": "^2.0.4",
     "dayjs": "^1.11.5",
+    "downsample": "^1.4.0",
     "fast-csv": "^4.3.6",
     "firebase": "^9.9.4",
     "immer": "^9.0.15",
