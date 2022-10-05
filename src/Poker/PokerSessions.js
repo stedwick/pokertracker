@@ -4,14 +4,42 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import TableBarIcon from "@mui/icons-material/TableBar";
 import AddIcon from "@mui/icons-material/Add";
 import { PokerSessionsContext } from "./PokerSessionsState";
+import InfiniteScroll from "react-infinite-scroller";
 
 export class PokerSessions extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    // this.loadingPsessions = false;
+    this.state = {
+      displayedPsessIndex: 0,
+      // loadingPsessions: false,
+    };
+  }
 
-  getAutofill = () => {
-    const { pokerSessions } = this.context;
+  loadMorePsessions = () => {
+    this.setState((prevState) => {
+      return {
+        displayedPsessIndex: prevState.displayedPsessIndex + 10,
+      };
+    });
+  };
+  // if (this.loadingPsessions || this.state.loadingPsessions) {
+  // } else {
+  //   this.loadingPsessions = true;
+  //   this.setState({ loadingPsessions: true });
+  //   setTimeout(() => {
+  //     this.loadingPsession = false;
+  //     this.setState((prevState) => {
+  //       return {
+  //         loadingPsessions: false,
+  //         displayedPsessIndex: prevState.displayedPsessIndex + 10,
+  //       };
+  //     });
+  //   }, 5000);
+  // }
+  // };
+
+  getAutofill = (pokerSessions) => {
     const autofill = {};
 
     autofill.location = [
@@ -43,7 +71,11 @@ export class PokerSessions extends React.Component {
 
   render() {
     const { pokerSessions, crud } = this.context;
-    const autofill = this.getAutofill();
+    const autofill = this.getAutofill(pokerSessions);
+    const displayedPsessions = pokerSessions.slice(
+      0,
+      this.state.displayedPsessIndex
+    );
 
     return (
       <Card variant="outlined">
@@ -68,16 +100,18 @@ export class PokerSessions extends React.Component {
             Sessions
           </Typography>
           <br />
-          {pokerSessions.map((pokerSession) => {
-            return (
-              <PokerSession
-                key={pokerSession.id}
-                pokerSession={pokerSession}
-                autofill={autofill}
-                crud={crud}
-              />
-            );
-          })}
+          <InfiniteScroll loadMore={this.loadMorePsessions} hasMore={true}>
+            {displayedPsessions.map((pokerSession) => {
+              return (
+                <PokerSession
+                  key={pokerSession.id}
+                  pokerSession={pokerSession}
+                  autofill={autofill}
+                  crud={crud}
+                />
+              );
+            })}
+          </InfiniteScroll>
 
           {pokerSessions.length === 0 && (
             <React.Fragment>
