@@ -64,7 +64,7 @@ export class PokerSessions extends React.Component {
     return autofill;
   };
 
-  componentDidUpdate(prevProps) {
+  updateMyKeys = () => {
     const { pokerSessions } = this.context;
     const oldFirstKey = this.state.firstKey;
     const newFirstKey = pokerSessions[0]?.id || -1;
@@ -76,6 +76,14 @@ export class PokerSessions extends React.Component {
       }
       this.setState(newState);
     }
+  }
+
+  componentDidMount(prevProps) {
+    this.updateMyKeys();
+  }
+
+  componentDidUpdate(prevProps) {
+    this.updateMyKeys();
   }
 
   render() {
