@@ -8,7 +8,7 @@ import {
   LineChart,
   Line,
   ResponsiveContainer,
-  //   Tooltip,
+  // Tooltip,
   ReferenceLine,
   Legend,
 } from "recharts";
@@ -23,8 +23,8 @@ export default function PokerLineChart() {
       currency(crud.calcSessionProfit(pSess, true), { precision: 0 })
     );
   });
-  pokerSessionsProfit.reverse();
   pokerSessionsProfit.push(0);
+  pokerSessionsProfit.reverse();
   //   const sortedPokerSessions = produce(pokerSessions, (draft) =>
   //     draft.reverse()
   //   );
