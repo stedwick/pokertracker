@@ -12,8 +12,8 @@ function App() {
     <div className="App">
       <PokerSessionsState>
         <PokerAppBar />
-        <Container>
-          <br />
+        <Container sx={{my: 2}}>
+          {/* <br /> */}
           <PnlCard />
           <br />
           <Typography sx={{ ml: 2 }}>
@@ -30,7 +30,6 @@ function App() {
           </Box>
           <br />
           <PokerSessions />
-          <br />
         </Container>
       </PokerSessionsState>
     </div>
