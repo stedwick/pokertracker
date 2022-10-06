@@ -4,13 +4,16 @@ import {
   CardContent,
   Typography,
   Box,
+  Button,
   IconButton,
   Popover,
   TextField,
   Container,
+  InputAdornment,
 } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 import { PokerSessionsContext } from "./PokerSessionsState";
 import { NumericFormat } from "react-number-format";
 import currency from "currency.js";
@@ -144,6 +147,23 @@ function BankrollPopover(props) {
               inputMode="decimal"
               pattern="[0-9.,$€£]*"
               autoFocus
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      type="submit"
+                      color="success"
+                      variant="contained"
+                      size="small"
+                      // onClick={this.setStartNow}
+                      startIcon={<SaveIcon edge="end" />}
+                    >
+                      {/* <SaveIcon /> */}
+                      Save
+                    </Button>
+                  </InputAdornment>
+                ),
+              }}
             />
           </form>
         </Container>
