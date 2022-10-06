@@ -43,9 +43,13 @@ export class PokerSessions extends React.Component {
     if (autofill.stakes.length <= 4) {
       autofill.stakes = [...new Set([...autofill.stakes, "1/2", "1/3", "2/5"])];
     }
-    autofill.stakes = autofill.stakes.sort(
-      (a, b) => Number(a.split("/").at(-1)) - Number(b.split("/").at(-1))
-    );
+    autofill.stakes = autofill.stakes.sort((a, b) => {
+      const aSplit = a.split("/");
+      const bSplit = b.split("/");
+      const aEnd = aSplit[aSplit.length - 1];
+      const bEnd = bSplit[bSplit.length - 1];
+      return Number(aEnd) - Number(bEnd);
+    });
     autofill.game = [
       ...new Set([
         ...pokerSessions.map((pSess) => pSess.game),

@@ -68,7 +68,7 @@ export class PokerSessionsState extends React.Component {
         (pSess) => String(pSess.id) === String(updatedPokerSession.id)
       );
       if (index !== -1) {
-        const prevPokerSession = prevPokerSessions.at(index);
+        const prevPokerSession = prevPokerSessions[index];
         
         if (
           (updatedPokerSession.cashOut && !prevPokerSession.cashOut)
