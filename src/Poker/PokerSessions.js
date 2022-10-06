@@ -16,11 +16,11 @@ export class PokerSessions extends React.Component {
 
   loadMorePsessions = () => {
     // setTimeout(()=>{
-      this.setState((prevState) => {
-        return {
-          displayedPsessIndex: prevState.displayedPsessIndex + 20,
-        };
-      });
+    this.setState((prevState) => {
+      return {
+        displayedPsessIndex: prevState.displayedPsessIndex + 20,
+      };
+    });
     // }, 5000);
   };
 
@@ -85,7 +85,10 @@ export class PokerSessions extends React.Component {
             Sessions
           </Typography>
           <br />
-          <InfiniteScroll loadMore={this.loadMorePsessions} hasMore={true}>
+          <InfiniteScroll
+            loadMore={this.loadMorePsessions}
+            hasMore={pokerSessions.length > this.state.displayedPsessIndex}
+          >
             {displayedPsessions.map((pokerSession) => {
               return (
                 <PokerSession
