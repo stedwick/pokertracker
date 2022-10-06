@@ -12,6 +12,7 @@ export class PokerSessions extends React.Component {
     this.state = {
       displayedPsessIndex: 20,
       currentKey: -1,
+      firstKey: -1,
     };
   }
 
@@ -62,6 +63,20 @@ export class PokerSessions extends React.Component {
 
     return autofill;
   };
+
+  componentDidUpdate(prevProps) {
+    const { pokerSessions } = this.context;
+    const oldFirstKey = this.state.firstKey;
+    const newFirstKey = pokerSessions[0]?.id || -1;
+
+    if (oldFirstKey !== newFirstKey) {
+      const newState = {firstKey: newFirstKey};
+      if (oldFirstKey !== -1) {
+        newState.currentKey = newFirstKey;
+      }
+      this.setState(newState);
+    }
+  }
 
   render() {
     const { pokerSessions, crud } = this.context;
