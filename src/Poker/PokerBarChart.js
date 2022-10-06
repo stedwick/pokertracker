@@ -6,7 +6,8 @@ import {
   BarChart,
   Bar,
   ResponsiveContainer,
-//   Tooltip,
+  //   Tooltip,
+  Legend,
 } from "recharts";
 import { useTheme } from "@emotion/react";
 
@@ -26,9 +27,65 @@ export default function PokerBarChart() {
   });
   chartData.reverse();
 
+  const barLegendPayload = [
+    {
+      inactive: false,
+      dataKey: "profitPositive",
+      type: "rect",
+      color: theme.palette.success.main,
+      value: "profitPositive",
+      payload: {
+        dataKey: "profitPositive",
+        stackId: "a",
+        fill: "#66bb6a",
+        xAxisId: 0,
+        yAxisId: 0,
+        legendType: "rect",
+        minPointSize: 0,
+        hide: false,
+        data: [],
+        layout: "vertical",
+        isAnimationActive: true,
+        animationBegin: 0,
+        animationDuration: 400,
+        animationEasing: "ease",
+      },
+    },
+    // {
+    //   inactive: false,
+    //   dataKey: "profitNegative",
+    //   type: "rect",
+    //   color: "#f44336",
+    //   value: "profitNegative",
+    //   payload: {
+    //     dataKey: "profitNegative",
+    //     stackId: "a",
+    //     fill: "#f44336",
+    //     xAxisId: 0,
+    //     yAxisId: 0,
+    //     legendType: "rect",
+    //     minPointSize: 0,
+    //     hide: false,
+    //     data: [],
+    //     layout: "vertical",
+    //     isAnimationActive: true,
+    //     animationBegin: 0,
+    //     animationDuration: 400,
+    //     animationEasing: "ease",
+    //   },
+    // },
+  ];
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={chartData}>
+        <Legend
+          formatter={() => <>&nbsp;recent sessions</>}
+          payload={barLegendPayload}
+          verticalAlign="top"
+          align="left"
+          iconSize={10}
+        />
         <Bar
           dataKey="profitPositive"
           stackId="a"
