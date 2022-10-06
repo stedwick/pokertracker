@@ -10,10 +10,13 @@ import {
   ResponsiveContainer,
   //   Tooltip,
   ReferenceLine,
+  Legend,
 } from "recharts";
+import { useTheme } from "@emotion/react";
 
 export default function PokerLineChart() {
   const { pokerSessions, crud } = useContext(PokerSessionsContext);
+  const theme = useTheme();
 
   const pokerSessionsProfit = pokerSessions.map((pSess) => {
     return Number(
@@ -40,10 +43,15 @@ export default function PokerLineChart() {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={downsampled}>
+        <Legend
+          formatter={() => <>&nbsp;profit over time</>}
+          verticalAlign="top"
+          align="left"
+        />
         <Line
           type="monotone"
           dataKey="y"
-          stroke="#8884d8"
+          stroke={theme.palette.mode === 'dark' ? "#8884d8" : 'blueviolet'}
           strokeWidth={2}
           dot={false}
         />
