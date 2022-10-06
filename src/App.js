@@ -12,23 +12,15 @@ function App() {
     <div className="App">
       <PokerSessionsState>
         <PokerAppBar />
-        <Container sx={{my: 2}}>
+        <Container sx={{ my: 2 }}>
           {/* <br /> */}
           <PnlCard />
-          <br />
-          <Typography sx={{ ml: 2 }}>
-            Line chart of profit over time.
-          </Typography>
-          <Box sx={{ height: { xs: 100, sm: 200 } }} width="100%">
+          <Box sx={{ px: 1, mt: 1, height: { xs: 125, sm: 250 } }} width="100%">
             <PokerLineChart />
           </Box>
-          <Typography sx={{ ml: 2 }}>
-            Bar chart of 25 most recent sessions.
-          </Typography>
-          <Box sx={{ height: { xs: 50, sm: 100 } }} width="100%">
+          <Box sx={{ px: 1, mb: 1, height: { xs: 75, sm: 150 } }} width="100%">
             <PokerBarChart />
           </Box>
-          <br />
           <PokerSessions />
         </Container>
       </PokerSessionsState>
