@@ -82,8 +82,12 @@ class PokerSession extends React.Component {
     }
 
     let myBorder = null;
-    if (this.props.currentKey === pokerSession.id && !this.state.expanded) {
-      myBorder = { border: 1, borderColor: "primary.main" };
+    if (this.props.currentKey === pokerSession.id) {
+      if (this.state.expanded) {
+        myBorder = { borderTop: 2, borderColor: "primary.main" };
+      } else {
+        myBorder = { border: 2, borderColor: "primary.main" };
+      }
     }
 
     return (
