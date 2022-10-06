@@ -28,7 +28,12 @@ class PokerSession extends React.Component {
   }
 
   toggleExpanded = () => {
-    this.setState((prevState) => ({ expanded: !Boolean(prevState.expanded) }));
+    this.setState(
+      (prevState) => ({ expanded: !Boolean(prevState.expanded) }),
+      () => {
+        this.props.setKey(this.props.pokerSession.id);
+      }
+    );
   };
 
   render() {
@@ -78,17 +83,17 @@ class PokerSession extends React.Component {
 
     let myBorder = null;
     if (this.props.currentKey === pokerSession.id && !this.state.expanded) {
-      myBorder = {border: 1, borderColor: "primary.main"};
+      myBorder = { border: 1, borderColor: "primary.main" };
     }
 
     return (
       <Accordion
         expanded={this.state.expanded}
         TransitionProps={{ unmountOnExit: true }}
-        sx={ myBorder }
-        onChange={()=>{
-          this.props.setKey(pokerSession.id);
-        }}
+        sx={myBorder}
+        // onChange={()=>{
+        //   this.props.setKey(pokerSession.id);
+        // }}
       >
         {/* Custom CSS in index.html */}
         <AccordionSummary
