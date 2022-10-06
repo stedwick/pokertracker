@@ -76,10 +76,19 @@ class PokerSession extends React.Component {
       );
     }
 
+    let myBorder = null;
+    if (this.props.currentKey === pokerSession.id) {
+      myBorder = {border: 1, borderColor: "primary.main"};
+    }
+
     return (
       <Accordion
         expanded={this.state.expanded}
         TransitionProps={{ unmountOnExit: true }}
+        sx={ myBorder }
+        onChange={()=>{
+          this.props.setKey(pokerSession.id);
+        }}
       >
         {/* Custom CSS in index.html */}
         <AccordionSummary

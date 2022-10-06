@@ -11,8 +11,13 @@ export class PokerSessions extends React.Component {
     super(props);
     this.state = {
       displayedPsessIndex: 20,
+      currentKey: -1,
     };
   }
+
+  setKey = (newKey) => {
+    this.setState({ currentKey: newKey });
+  };
 
   loadMorePsessions = () => {
     // setTimeout(()=>{
@@ -96,6 +101,8 @@ export class PokerSessions extends React.Component {
                   pokerSession={pokerSession}
                   autofill={autofill}
                   crud={crud}
+                  currentKey={this.state.currentKey}
+                  setKey={this.setKey}
                 />
               );
             })}
