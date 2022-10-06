@@ -10,8 +10,8 @@ const PokerSessionsContext = React.createContext({ values: [] });
 export class PokerSessionsState extends React.Component {
   constructor(props) {
     super(props);
-    // const pokerSessions = demoData;
-    const pokerSessions = philData;
+    const pokerSessions = demoData;
+    // const pokerSessions = philData;
     this.sortPokerSessions(pokerSessions);
     this.state = {
       idGen: idGen,
