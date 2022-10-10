@@ -60,6 +60,7 @@ class PokerSession extends React.Component {
 
     let profit = crud.calcSessionProfit(pokerSession);
     let profitEl = false;
+    let inForEl = false;
     let AccordionSummaryBgColor = false;
     if (crud.sessionIsFinished(pokerSession)) {
       let color, plusOrMinus;
@@ -77,6 +78,12 @@ class PokerSession extends React.Component {
         <Typography sx={{ color: color }}>
           {plusOrMinus}
           {currency(profit, { precision: 0 }).format()}
+        </Typography>
+      );
+    } else if (pokerSession.buyIn) {
+      inForEl = (
+        <Typography variant="body2">
+          in for {currency(pokerSession.buyIn, { precision: 0 }).format()}
         </Typography>
       );
     }
@@ -150,6 +157,7 @@ class PokerSession extends React.Component {
                   {pokerSession.game.replaceAll(/[^0-9A-Z]/g, "")}
                 </Typography>
               )}
+              {inForEl}
             </Box>
             {pokerSession.notes && (
               <Box display="flex" sx={{ mt: 0.5 }}>

@@ -22,7 +22,7 @@ export class PnlCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      initRoll: 999839,
+      initRoll: 1000259,
     };
   }
 
