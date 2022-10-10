@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Typography, Paper } from "@mui/material";
 import PokerAppBar from "./layout/PokerAppBar";
 import { PnlCard } from "./Poker/PnlCard";
 import PokerSessions from "./Poker/PokerSessions";
@@ -26,15 +26,17 @@ function App() {
         </Container>
       </PokerSessionsState>
       <Container>
-        <Typography
-          variant="body1"
-          align="center"
-          sx={{ mx: 2, mb: 2 }}
-          color="text.secondary"
-        >
-          <InfoIcon fontSize="small" sx={{ verticalAlign: "sub" }} /> This is
-          demo data. Sign-in with Google to track your poker profit.
-        </Typography>
+        <Paper sx={{ backgroundColor: "transparent" }} elevation={0}>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ mx: 2, mb: 2 }}
+            color="text.secondary"
+          >
+            <InfoIcon fontSize="small" sx={{ verticalAlign: "sub" }} /> This is
+            demo data. Sign-in with Google to track your poker profit.
+          </Typography>
+        </Paper>
       </Container>
     </div>
   );
