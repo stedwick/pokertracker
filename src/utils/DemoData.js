@@ -67,6 +67,17 @@ const demoData = [
     notes: "",
     cashOrTourney: "cashGame",
   },
+  {
+    id: idGen.next().value,
+    createdAt: nowDateTime,
+    stakes: "1/2",
+    buyIn: 420,
+    startDateTime: nowDateTime.subtract(1, "hour"),
+    location: "Portland Meadows",
+    game: "No-Limit Hold'em",
+    notes: "",
+    cashOrTourney: "cashGame",
+  },
 ];
 
 export default demoData;
