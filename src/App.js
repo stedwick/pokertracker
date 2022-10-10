@@ -26,7 +26,12 @@ function App() {
         </Container>
       </PokerSessionsState>
       <Container>
-        <Typography align="center" sx={{ mx: 2, mb: 2 }} color="text.secondary">
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{ mx: 2, mb: 2 }}
+          color="text.secondary"
+        >
           <InfoIcon fontSize="small" sx={{ verticalAlign: "sub" }} /> This is
           demo data. Sign-in with Google to track your poker profit.
         </Typography>
