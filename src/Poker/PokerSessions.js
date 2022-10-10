@@ -70,13 +70,13 @@ export class PokerSessions extends React.Component {
     const newFirstKey = pokerSessions[0]?.id || -1;
 
     if (oldFirstKey !== newFirstKey) {
-      const newState = {firstKey: newFirstKey};
+      const newState = { firstKey: newFirstKey };
       if (oldFirstKey !== -1) {
         newState.currentKey = newFirstKey;
       }
       this.setState(newState);
     }
-  }
+  };
 
   componentDidMount(prevProps) {
     this.updateMyKeys();
@@ -96,7 +96,7 @@ export class PokerSessions extends React.Component {
 
     return (
       <Card variant="outlined">
-        <CardContent sx={{ position: "relative" }}>
+        <CardContent sx={{ position: "relative", "&:last-child": {pb: 2} }}>
           <Typography
             variant="h6"
             sx={{ color: "text.disabled", position: "absolute" }}
@@ -113,10 +113,9 @@ export class PokerSessions extends React.Component {
               New
             </Button>
           </Box>
-          <Typography variant="h6" align="center">
+          <Typography variant="h6" align="center" sx={{ mb: 2 }}>
             Sessions
           </Typography>
-          <br />
           <InfiniteScroll
             loadMore={this.loadMorePsessions}
             hasMore={pokerSessions.length > this.state.displayedPsessIndex}
