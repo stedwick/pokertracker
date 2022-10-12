@@ -3,7 +3,7 @@ const dayjs = require("dayjs");
 const nowDateTime = dayjs();
 
 function* idMaker() {
-  let index = 0;
+  let index = 1;
   while (true) {
     yield index++;
   }
