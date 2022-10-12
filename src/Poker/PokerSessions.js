@@ -71,7 +71,7 @@ export class PokerSessions extends React.Component {
 
     if (oldFirstKey !== newFirstKey) {
       const newState = { firstKey: newFirstKey };
-      if (oldFirstKey !== -1) {
+      if (oldFirstKey !== -1 && pokerSessions[0]?.isNew) {
         newState.currentKey = newFirstKey;
       }
       this.setState(newState);
@@ -96,7 +96,7 @@ export class PokerSessions extends React.Component {
 
     return (
       <Card variant="outlined">
-        <CardContent sx={{ position: "relative", "&:last-child": {pb: 2} }}>
+        <CardContent sx={{ position: "relative", "&:last-child": { pb: 2 } }}>
           <Typography
             variant="h6"
             sx={{ color: "text.disabled", position: "absolute" }}

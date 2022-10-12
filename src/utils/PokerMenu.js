@@ -14,7 +14,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import EmailIcon from "@mui/icons-material/Email";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import DownloadIcon from "@mui/icons-material/Download";
-import { PokerUser } from "./PokerUser";
+import { PokerUserContext } from "../layout/userState";
 import { PokerSessionsContext } from "../Poker/PokerSessionsState";
 import { CSVLink, CSVDownload } from "react-csv";
 import dayjs from "dayjs";
@@ -24,7 +24,7 @@ function ExportCSV(props) {
   return (
     <CSVLink
       data={pokerSessions}
-      style={{textDecoration: 'none'}}
+      style={{ textDecoration: "none" }}
       onClick={props.closeHandler}
       filename={`pokerSessions_${dayjs().format("YY-MM-DD")}.csv`}
     >
@@ -34,6 +34,8 @@ function ExportCSV(props) {
 }
 
 export default function PokerMenu(props) {
+  const { crud } = useContext(PokerUserContext);
+
   let menuProps = {
     open: props.isOpen,
     onClose: props.closeHandler,
@@ -95,7 +97,7 @@ export default function PokerMenu(props) {
         </MenuItem>
       </Link>
       <Divider />
-      <MenuItem onClick={PokerUser.signOut}>
+      <MenuItem onClick={crud.signOut}>
         <ListItemIcon>
           <Logout color="secondary" />
         </ListItemIcon>

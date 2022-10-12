@@ -1,70 +1,29 @@
 import React from "react";
-import { onAuthStateChanged, signInWithRedirect, signOut } from "firebase/auth";
-import { auth, authGoogle, db } from "./firebase";
 import { Button, Avatar } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PokerMenu from "./PokerMenu";
 import MenuIcon from "@mui/icons-material/Menu";
-import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { PokerUserContext } from "../layout/userState";
 
 export class PokerUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { myUser: null, menuIsOpen: false, menuAnchor: null };
+    this.state = { menuIsOpen: false, menuAnchor: null };
   }
-
-  componentDidMount() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.setState({ myUser: user });
-        // window.user = user;
-        this.setFirestoreUser(user);
-      } else {
-        // User is signed out
-        this.setState({ myUser: null });
-      }
-    });
-  }
-
-  static signIn() {
-    signInWithRedirect(auth, authGoogle);
-  }
-  static signOut() {
-    signOut(auth);
-  }
-  setFirestoreUser = async (user) => {
-    try {
-      await setDoc(
-        doc(db, "users", user.uid),
-        {
-          email: user.email,
-          createdAt: Timestamp.now(),
-        },
-        { merge: true }
-      );
-      const docRef = await getDoc(doc(db, "users", user.uid));
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
 
   openMenu = (event) => {
-    this.setState({ menuIsOpen: true });
-    this.setState({ menuAnchor: event.currentTarget });
+    this.setState({ menuIsOpen: true, menuAnchor: event.currentTarget });
   };
   closeMenu = () => {
     this.setState({ menuIsOpen: false });
   };
 
   render() {
-    const myUser = this.state.myUser;
+    const myUser = this.context.pokerUser;
     const menuIsOpen = this.state.menuIsOpen;
     const menuAnchor = this.state.menuAnchor;
 
-    if (myUser) {
+    if (!myUser.demo) {
       return (
         <React.Fragment>
           <Button onClick={this.openMenu} sx={{ pr: 0 }}>
@@ -84,7 +43,7 @@ export class PokerUser extends React.Component {
           <Button
             variant="contained"
             startIcon={<LoginIcon />}
-            onClick={PokerUser.signIn}
+            onClick={this.context.crud.signIn}
           >
             Login
           </Button>
@@ -93,3 +52,4 @@ export class PokerUser extends React.Component {
     }
   }
 }
+PokerUser.contextType = PokerUserContext;

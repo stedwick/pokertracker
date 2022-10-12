@@ -80,5 +80,7 @@ const demoData = [
   },
 ];
 
+const demoBankroll = 1000259;
+
 export default demoData;
-export {idGen};
+export {idGen, demoBankroll};
