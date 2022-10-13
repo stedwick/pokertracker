@@ -21,7 +21,6 @@ export class PokerUserState extends React.Component {
     this.state = {
       pokerUser: demoUser,
       crud: {
-        create: this.setFirestoreUser,
         updateBankroll: this.updateBankroll,
         signIn: this.signIn,
         signOut: this.signOut,
@@ -40,7 +39,10 @@ export class PokerUserState extends React.Component {
           this.userHasChanged = false;
         });
         // window.myUser = user;
-        this.setFirestoreUser(user);
+        this.setFirestoreUser(user.uid, {
+          email: user.email,
+          updatedAt: Timestamp.now(),
+        });
       } else {
         // User is signed out
         this.setState({ pokerUser: demoUser }, () => {
@@ -57,19 +59,20 @@ export class PokerUserState extends React.Component {
     signOut(auth);
   };
 
-  updateBankroll = (newRoll) => {};
+  updateBankroll = (newRoll) => {
+    this.setState({pokerUser: {bankrollAdjustment: newRoll}});
+    // this.setFirestoreUser(uid, {
+    //   bankrollAdjustment: Number(currency(newRoll, { precision: 2 }).format()),
+    // })
+    //   .then(() => {})
+    //   .catch(() => {})
+    //   .finally(() => {});
+  };
 
-  setFirestoreUser = async (user) => {
+  setFirestoreUser = async (uid, userFields) => {
     try {
-      const docRef = doc(db, "users", user.uid);
-      await setDoc(
-        docRef,
-        {
-          email: user.email,
-          updatedAt: Timestamp.now(),
-        },
-        { merge: true }
-      );
+      const docRef = doc(db, "users", uid);
+      await setDoc(docRef, userFields, { merge: true });
       const docSnap = await getDoc(docRef);
       console.log(
         "(setFirestoreUser) Firestore setDoc written:",

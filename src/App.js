@@ -4,7 +4,7 @@ import PokerAppBar from "./layout/PokerAppBar";
 import { PnlCard } from "./Poker/PnlCard";
 import PokerSessions from "./Poker/PokerSessions";
 import PokerSessionsState from "./Poker/PokerSessionsState";
-import PokerUserState from "./layout/userState";
+import PokerUserState, { PokerUserContext } from "./layout/userState";
 import PokerLineChart from "./Poker/PokerLineChart.js";
 import PokerBarChart from "./Poker/PokerBarChart.js";
 
@@ -16,7 +16,11 @@ function App() {
           <PokerAppBar />
           <Container sx={{ my: 2 }}>
             {/* <br /> */}
-            <PnlCard />
+            <PokerUserContext.Consumer>
+              {(value) => (
+                <PnlCard pokerUser={value.pokerUser} crud={value.crud} />
+              )}
+            </PokerUserContext.Consumer>
             <Box
               sx={{ px: 1, mt: 1, height: { xs: 125, sm: 250 } }}
               width="100%"

@@ -19,22 +19,27 @@ import { NumericFormat } from "react-number-format";
 import currency from "currency.js";
 
 export class PnlCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      initRoll: 1000259,
-    };
+  // constructor(props) {
+  //   super(props);
+  // }
+
+  get initRoll() {
+    return this.props?.pokerUser?.bankrollAdjustment;
+  }
+  get updateBankroll() {
+    return this.props?.crud?.updateBankroll;
   }
 
   handleInitRoll = (money) => {
-    this.setState({ initRoll: money });
+    this.updateBankroll(money);
+    // this.setState({ initRoll: money });
   };
 
   render() {
     const { crud, pokerSessions } = this.context;
     const balance = crud
       .calcTotalProfit(pokerSessions)
-      .add(this.state.initRoll);
+      .add(this.initRoll);
     let color = "text.primary";
     const rounded = Number(currency(balance, { precision: 0 }).value);
     if (rounded > 0) {
@@ -47,7 +52,7 @@ export class PnlCard extends React.Component {
       <Card>
         <CardContent sx={{ position: "relative" }}>
           <BankrollPopover
-            money={this.state.initRoll}
+            money={this.initRoll}
             handler={this.handleInitRoll}
           />
           <Typography
