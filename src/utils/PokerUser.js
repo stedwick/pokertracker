@@ -19,11 +19,11 @@ export class PokerUser extends React.Component {
   };
 
   render() {
-    const myUser = this.context.pokerUser;
+    const myUser = this.context.firestoreUser;
     const menuIsOpen = this.state.menuIsOpen;
     const menuAnchor = this.state.menuAnchor;
 
-    if (!myUser.demo) {
+    if (myUser) {
       return (
         <React.Fragment>
           <Button onClick={this.openMenu} sx={{ pr: 0 }}>

@@ -19,6 +19,7 @@ export class PokerUserState extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firestoreUser: null,
       pokerUser: demoUser,
       crud: {
         updateBankroll: this.updateBankroll,
@@ -29,23 +30,25 @@ export class PokerUserState extends React.Component {
   }
 
   componentDidMount() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (this.userHasChanged) return;
       this.userHasChanged = true;
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        this.setState({ pokerUser: user }, () => {
-          this.userHasChanged = false;
-        });
         // window.myUser = user;
-        this.setFirestoreUser(user.uid, {
+        this.setState({ firestoreUser: user });
+        const userObj = await this.setFirestoreUser(user.uid, {
+          idFirestore: user.uid,
           email: user.email,
           updatedAt: Timestamp.now(),
         });
+        this.setState({ pokerUser: userObj }, () => {
+          this.userHasChanged = false;
+        });
       } else {
         // User is signed out
-        this.setState({ pokerUser: demoUser }, () => {
+        this.setState({ pokerUser: demoUser, firestoreUser: null }, () => {
           this.userHasChanged = false;
         });
       }
@@ -60,13 +63,23 @@ export class PokerUserState extends React.Component {
   };
 
   updateBankroll = (newRoll) => {
-    this.setState({pokerUser: {bankrollAdjustment: newRoll}});
-    // this.setFirestoreUser(uid, {
-    //   bankrollAdjustment: Number(currency(newRoll, { precision: 2 }).format()),
-    // })
-    //   .then(() => {})
-    //   .catch(() => {})
-    //   .finally(() => {});
+    if (this.state.firestoreUser?.uid) {
+      const newRollNum = Number(currency(newRoll, { precision: 2 }).value);
+      this.setFirestoreUser(this.state.firestoreUser.uid, {
+        bankrollAdjustment: newRollNum,
+      })
+        .then(() => {
+          this.setState((prevState) => ({
+            pokerUser: { ...prevState.pokerUser, bankrollAdjustment: newRollNum },
+          }));
+        })
+        .catch(() => {})
+        .finally(() => {});
+    } else {
+      this.setState((prevState) => ({
+        pokerUser: { ...prevState.pokerUser, bankrollAdjustment: newRoll },
+      }));
+    }
   };
 
   setFirestoreUser = async (uid, userFields) => {
@@ -74,11 +87,13 @@ export class PokerUserState extends React.Component {
       const docRef = doc(db, "users", uid);
       await setDoc(docRef, userFields, { merge: true });
       const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
       console.log(
         "(setFirestoreUser) Firestore setDoc written:",
         docSnap.id,
-        docSnap.data()
+        docData
       );
+      return docData;
     } catch (e) {
       console.error("(setFirestoreUser) Firestore setDoc error:", e);
     }
