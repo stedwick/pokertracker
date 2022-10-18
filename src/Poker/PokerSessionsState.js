@@ -1,7 +1,16 @@
 import * as React from "react";
 import currency from "currency.js";
-import demoData, {idGen} from "../utils/DemoData.js";
-import philData from "../utils/PhilData.js";
+import demoData, { idGen } from "../utils/DemoData.js";
+// import philData from "../utils/PhilData.js";
+import {
+  doc,
+  collection,
+  addDoc,
+  setDoc,
+  getDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "../utils/firebase";
 // window.currency = currency;
 const dayjs = require("dayjs");
 
@@ -14,6 +23,7 @@ export class PokerSessionsState extends React.Component {
     // const pokerSessions = philData;
     this.sortPokerSessions(pokerSessions);
     this.state = {
+      // firestoreUser: props.firestoreUser,
       idGen: idGen,
       pokerSessions: pokerSessions,
       crud: {
@@ -30,8 +40,8 @@ export class PokerSessionsState extends React.Component {
   sessionIsFinished = (pokerSession) => {
     return (
       ((pokerSession.cashOut || pokerSession.cashOut === 0) &&
-      (pokerSession.buyIn || pokerSession.buyIn === 0))
-      || pokerSession.endDateTime
+        (pokerSession.buyIn || pokerSession.buyIn === 0)) ||
+      pokerSession.endDateTime
     );
   };
 
@@ -61,7 +71,7 @@ export class PokerSessionsState extends React.Component {
     });
   };
 
-  updatePokerSession = (updatedPokerSession) => {
+  updatePokerSession = (updatedPokerSession, opts = { sync: true }) => {
     this.setState((prevState) => {
       const prevPokerSessions = prevState.pokerSessions;
       const index = prevPokerSessions.findIndex(
@@ -69,24 +79,28 @@ export class PokerSessionsState extends React.Component {
       );
       if (index !== -1) {
         const prevPokerSession = prevPokerSessions[index];
-        
+
         if (
-          (updatedPokerSession.cashOut && !prevPokerSession.cashOut)
-          && (!updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
+          updatedPokerSession.cashOut &&
+          !prevPokerSession.cashOut &&
+          !updatedPokerSession.endDateTime &&
+          !prevPokerSession.endDateTime
         ) {
           updatedPokerSession.endDateTime = dayjs();
           // updatedPokerSession.key = dayjs().unix();
         }
         if (
-          (updatedPokerSession.endDateTime && !prevPokerSession.endDateTime)
-          && (!updatedPokerSession.cashOut && !prevPokerSession.cashOut)
+          updatedPokerSession.endDateTime &&
+          !prevPokerSession.endDateTime &&
+          !updatedPokerSession.cashOut &&
+          !prevPokerSession.cashOut
         ) {
           updatedPokerSession.cashOut = 0;
           // updatedPokerSession.key = dayjs().unix();
         }
 
         const newPokerSession = { ...prevPokerSession, ...updatedPokerSession };
-        delete newPokerSession.isNew;
+        if (opts.sync) delete newPokerSession.isNew;
         const newPokerSessions = prevPokerSessions;
         newPokerSessions.splice(index, 1, newPokerSession);
         this.sortPokerSessions(newPokerSessions);
@@ -129,9 +143,72 @@ export class PokerSessionsState extends React.Component {
       };
     }
     newSession.isNew = true;
-    this.setState((prevState) => ({
-      pokerSessions: [newSession, ...prevState.pokerSessions],
-    }));
+    this.setState(
+      (prevState) => ({
+        pokerSessions: [newSession, ...prevState.pokerSessions],
+      }),
+      () => {
+        this.syncSession(newSession);
+      }
+    );
+  };
+
+  syncSession = async (pSess) => {
+    // console.log(this.props);
+    // debugger;
+    if (!this.props.firestoreUser?.uid) return null;
+
+    try {
+      const objToSync = {
+        stakes: String(pSess.stakes) || null,
+        buyIn: Number(currency(pSess.buyIn).value) || null,
+        cashOut: Number(currency(pSess.cashOut).value) || null,
+        startDateTime: pSess.startDateTime
+          ? Timestamp.fromDate(dayjs(pSess.startDateTime).toDate())
+          : null,
+        endDateTime: pSess.endDateTime
+          ? Timestamp.fromDate(dayjs(pSess.endDateTime).toDate())
+          : null,
+        game: String(pSess.game) || null,
+        location: String(pSess.location) || null,
+        notes: String(pSess.notes) || null,
+        cashOrTourney: String(pSess.cashOrTourney) || null,
+      };
+
+      const docRef = doc(db, "users", this.props.firestoreUser.uid);
+      const colRef = collection(docRef, "pokerSessions");
+
+      if (pSess.firestoreId) {
+        const docRefWithId = doc(
+          db,
+          "users",
+          this.props.firestoreUser.uid,
+          "pokerSessions",
+          pSess.firestoreId
+        );
+        const docSnap = await getDoc(docRefWithId);
+        if (docSnap.exists()) {
+          await setDoc(docRefWithId, objToSync, { merge: true });
+          // const docSnap = await getDoc(docRef);
+          // const docData = docSnap.data();
+          console.log("Updating pSess:", docRefWithId.path);
+          // this.updatePokerSession(docData);
+          return true;
+        }
+      }
+
+      const newDocRef = await addDoc(colRef, objToSync);
+      pSess.firestoreId = newDocRef.id;
+      this.updatePokerSession(pSess, { sync: false });
+      // const docSnap = await getDoc(docRef);
+      // const docData = docSnap.data();
+      console.log("Creating pSess:", newDocRef.path);
+      // return docData;
+      return true;
+    } catch (e) {
+      console.error("(setFirestoreUser)", e);
+      return false;
+    }
   };
 
   deletePokerSession = (pokerSession) => {

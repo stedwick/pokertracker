@@ -11,32 +11,32 @@ import PokerBarChart from "./Poker/PokerBarChart.js";
 function App() {
   return (
     <div className="App">
-      <PokerSessionsState>
-        <PokerUserState>
-          <PokerAppBar />
-          <Container sx={{ my: 2 }}>
-            {/* <br /> */}
-            <PokerUserContext.Consumer>
-              {(value) => (
+      <PokerUserState>
+        <PokerUserContext.Consumer>
+          {(value) => (
+            <PokerSessionsState firestoreUser={value.firestoreUser}>
+              <PokerAppBar />
+              <Container sx={{ my: 2 }}>
+                {/* <br /> */}
                 <PnlCard pokerUser={value.pokerUser} crud={value.crud} />
-              )}
-            </PokerUserContext.Consumer>
-            <Box
-              sx={{ px: 1, mt: 1, height: { xs: 125, sm: 250 } }}
-              width="100%"
-            >
-              <PokerLineChart />
-            </Box>
-            <Box
-              sx={{ px: 1, mb: 1, height: { xs: 75, sm: 150 } }}
-              width="100%"
-            >
-              <PokerBarChart />
-            </Box>
-            <PokerSessions />
-          </Container>
-        </PokerUserState>
-      </PokerSessionsState>
+                <Box
+                  sx={{ px: 1, mt: 1, height: { xs: 125, sm: 250 } }}
+                  width="100%"
+                >
+                  <PokerLineChart />
+                </Box>
+                <Box
+                  sx={{ px: 1, mb: 1, height: { xs: 75, sm: 150 } }}
+                  width="100%"
+                >
+                  <PokerBarChart />
+                </Box>
+                <PokerSessions />
+              </Container>
+            </PokerSessionsState>
+          )}
+        </PokerUserContext.Consumer>
+      </PokerUserState>
     </div>
   );
 }

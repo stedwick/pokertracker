@@ -36,7 +36,7 @@ export class PokerUserState extends React.Component {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        // window.myUser = user;
+        // window.myFirebaseUser = user;
         this.setState({ firestoreUser: user });
         const userObj = await this.setFirestoreUser(user.uid, {
           idFirestore: user.uid,
@@ -48,6 +48,7 @@ export class PokerUserState extends React.Component {
         });
       } else {
         // User is signed out
+        // window.myFirebaseUser = null;
         this.setState({ pokerUser: demoUser, firestoreUser: null }, () => {
           this.userHasChanged = false;
         });
@@ -70,7 +71,10 @@ export class PokerUserState extends React.Component {
       })
         .then(() => {
           this.setState((prevState) => ({
-            pokerUser: { ...prevState.pokerUser, bankrollAdjustment: newRollNum },
+            pokerUser: {
+              ...prevState.pokerUser,
+              bankrollAdjustment: newRollNum,
+            },
           }));
         })
         .catch(() => {})
