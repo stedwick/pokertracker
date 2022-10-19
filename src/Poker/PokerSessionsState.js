@@ -222,6 +222,8 @@ export class PokerSessionsState extends React.Component {
       return true;
     } catch (e) {
       console.error("(setFirestoreUser)", e);
+      alert("Could not connect to the Internet. Refreshing.")
+      window.location.reload();
       return false;
     }
   };
