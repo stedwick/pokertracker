@@ -8,6 +8,7 @@ import {
   addDoc,
   setDoc,
   getDoc,
+  deleteDoc,
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
@@ -72,6 +73,7 @@ export class PokerSessionsState extends React.Component {
   };
 
   updatePokerSession = (updatedPokerSession, opts = { sync: true }) => {
+    // debugger;
     this.setState((prevState) => {
       const prevPokerSessions = prevState.pokerSessions;
       const index = prevPokerSessions.findIndex(
@@ -100,10 +102,15 @@ export class PokerSessionsState extends React.Component {
         }
 
         const newPokerSession = { ...prevPokerSession, ...updatedPokerSession };
-        if (opts.sync) delete newPokerSession.isNew;
+        if (opts.sync && newPokerSession.firestoreId)
+          delete newPokerSession.isNew;
         const newPokerSessions = prevPokerSessions;
         newPokerSessions.splice(index, 1, newPokerSession);
         this.sortPokerSessions(newPokerSessions);
+        // debugger;
+        if (opts.sync && newPokerSession.firestoreId) {
+          this.syncSession(newPokerSession);
+        }
         return { pokerSessions: newPokerSessions };
       } else {
         return null;
@@ -112,10 +119,12 @@ export class PokerSessionsState extends React.Component {
   };
 
   addPokerSession = () => {
+    // debugger;
     const nowDateTime = dayjs();
     let newSession;
     if (this.state.pokerSessions.length > 0) {
       const clonedSession = { ...this.state.pokerSessions[0] };
+      delete clonedSession.firestoreId;
       const blankSession = {
         id: this.state.idGen.next().value,
         createdAt: nowDateTime,
@@ -148,12 +157,13 @@ export class PokerSessionsState extends React.Component {
         pokerSessions: [newSession, ...prevState.pokerSessions],
       }),
       () => {
+        // debugger;
         this.syncSession(newSession);
       }
     );
   };
 
-  syncSession = async (pSess) => {
+  syncSession = async (pSess, opts = { delete: false }) => {
     // console.log(this.props);
     // debugger;
     if (!this.props.firestoreUser?.uid) return null;
@@ -186,11 +196,16 @@ export class PokerSessionsState extends React.Component {
           "pokerSessions",
           pSess.firestoreId
         );
+        if (opts.delete) {
+          await deleteDoc(docRefWithId);
+          return true;
+        }
         const docSnap = await getDoc(docRefWithId);
         if (docSnap.exists()) {
           await setDoc(docRefWithId, objToSync, { merge: true });
           // const docSnap = await getDoc(docRef);
           // const docData = docSnap.data();
+          // debugger;
           console.log("Updating pSess:", docRefWithId.path);
           // this.updatePokerSession(docData);
           return true;
@@ -217,11 +232,17 @@ export class PokerSessionsState extends React.Component {
       (pSess) => pSess.id === pokerSession.id
     );
     if (pSessIndex > -1) {
-      this.setState((prevState) => {
-        let splicedPokerSessions = [...prevState.pokerSessions];
-        splicedPokerSessions.splice(pSessIndex, 1);
-        return { pokerSessions: splicedPokerSessions };
-      });
+      this.setState(
+        (prevState) => {
+          let splicedPokerSessions = [...prevState.pokerSessions];
+          splicedPokerSessions.splice(pSessIndex, 1);
+          return { pokerSessions: splicedPokerSessions };
+        },
+        () => {
+          if (pokerSession.firestoreId)
+            this.syncSession(pokerSession, { delete: true });
+        }
+      );
     }
   };
 
