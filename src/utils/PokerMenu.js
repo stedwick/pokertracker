@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useContext } from "react";
+import currency from "currency.js";
 import {
   Divider,
   ListItemIcon,
@@ -21,9 +22,26 @@ import dayjs from "dayjs";
 
 function ExportCSV(props) {
   const { pokerSessions } = useContext(PokerSessionsContext);
+  const csvData = [];
+  pokerSessions.forEach((pSess) => {
+    // debugger;
+    csvData.push({
+      stakes: String(pSess.stakes) || null,
+      buyIn: Number(currency(pSess.buyIn).value) || null,
+      cashOut: Number(currency(pSess.cashOut).value) || null,
+      startDateTime: pSess.startDateTime
+        ? dayjs(pSess.startDateTime).format()
+        : null,
+      endDateTime: pSess.endDateTime ? dayjs(pSess.endDateTime).format() : null,
+      game: String(pSess.game) || null,
+      location: String(pSess.location) || null,
+      notes: String(pSess.notes) || null,
+      cashOrTourney: String(pSess.cashOrTourney) || null,
+    });
+  });
   return (
     <CSVLink
-      data={pokerSessions}
+      data={csvData}
       style={{ textDecoration: "none" }}
       onClick={props.closeHandler}
       filename={`pokerSessions_${dayjs().format("YY-MM-DD")}.csv`}
