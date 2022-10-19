@@ -39,9 +39,19 @@ export class PokerSessionsState extends React.Component {
     };
   }
 
-  componentDidMount() {
-    console.log("Mounted");
-    this.fetchSessions();
+  componentDidUpdate(prevProps) {
+    console.log("Updated");
+    if (prevProps.firestoreUser !== this.props.firestoreUser) {
+      if (this.props.firestoreUser) {
+        this.fetchSessions();
+      } else {
+        // reset fake data
+        const pokerSessions = demoData;
+        // const pokerSessions = philData;
+        this.sortPokerSessions(pokerSessions);
+        this.setState({pokerSessions: pokerSessions});
+      }
+    }
   }
 
   sessionIsFinished = (pokerSession) => {
@@ -170,7 +180,7 @@ export class PokerSessionsState extends React.Component {
   };
 
   fetchSessions = async () => {
-    console.log('fetchSessions.');
+    console.log("fetchSessions.");
     console.log(this.props.firestoreUser?.uid);
     if (!this.props.firestoreUser?.uid) return false;
     try {
@@ -179,13 +189,30 @@ export class PokerSessionsState extends React.Component {
       const querySnapshot = await getDocs(colRef);
       const newPokerSessions = [];
       querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        // debugger;
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-        newPokerSessions.push(doc.data());
+        // console.log(doc.id, " => ", data);
+        newPokerSessions.push({
+          ...data,
+          id: doc.id,
+          firestoreId: doc.id,
+          stakes: data.stakes || "",
+          buyIn: data.buyIn || "",
+          cashOut: data.cashOut || "",
+          startDateTime: data.startDateTime
+            ? dayjs(data.startDateTime.toDate())
+            : "",
+          endDateTime: data.endDateTime ? dayjs(data.endDateTime.toDate()) : "",
+          location: data.location || "",
+          game: data.game || "",
+          notes: data.notes || "",
+          cashOrTourney: data.cashOrTourney || "",
+        });
       });
       this.sortPokerSessions(newPokerSessions);
       this.setState({
-        pokerSessions: [newPokerSessions],
+        pokerSessions: newPokerSessions,
       });
     } catch (e) {
       console.error("(fetchSessions)", e);
