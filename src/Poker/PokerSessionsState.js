@@ -8,6 +8,7 @@ import {
   addDoc,
   setDoc,
   getDoc,
+  getDocs,
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
@@ -36,6 +37,11 @@ export class PokerSessionsState extends React.Component {
         sessionIsFinished: this.sessionIsFinished,
       },
     };
+  }
+
+  componentDidMount() {
+    console.log("Mounted");
+    this.fetchSessions();
   }
 
   sessionIsFinished = (pokerSession) => {
@@ -163,6 +169,32 @@ export class PokerSessionsState extends React.Component {
     );
   };
 
+  fetchSessions = async () => {
+    console.log('fetchSessions.');
+    console.log(this.props.firestoreUser?.uid);
+    if (!this.props.firestoreUser?.uid) return false;
+    try {
+      const docRef = doc(db, "users", this.props.firestoreUser.uid);
+      const colRef = collection(docRef, "pokerSessions");
+      const querySnapshot = await getDocs(colRef);
+      const newPokerSessions = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        newPokerSessions.push(doc.data());
+      });
+      this.sortPokerSessions(newPokerSessions);
+      this.setState({
+        pokerSessions: [newPokerSessions],
+      });
+    } catch (e) {
+      console.error("(fetchSessions)", e);
+      alert("Could not connect to the Internet. Refreshing.");
+      window.location.reload();
+      return false;
+    }
+  };
+
   syncSession = async (pSess, opts = { delete: false }) => {
     // console.log(this.props);
     // debugger;
@@ -221,8 +253,8 @@ export class PokerSessionsState extends React.Component {
       // return docData;
       return true;
     } catch (e) {
-      console.error("(setFirestoreUser)", e);
-      alert("Could not connect to the Internet. Refreshing.")
+      console.error("(syncSession)", e);
+      alert("Could not connect to the Internet. Refreshing.");
       window.location.reload();
       return false;
     }
